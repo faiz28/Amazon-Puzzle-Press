@@ -1,5 +1,5 @@
 # Ignore the build directory
-/my_env
+./my_env
 
 # for django
 

@@ -3,7 +3,7 @@ from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
 import homepage.views
-from puzzle.upload import 
+from upload import urls
 
 urlpatterns = [
     path('',homepage.views.home,name='home'),
