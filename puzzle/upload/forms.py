@@ -1,7 +1,17 @@
 from django import forms
+from django.core.exceptions import ValidationError
+from django.db.models import fields
+from .models import Up_file
 
-class DocumentForm(forms.Form):
-    file_upload = forms.FileField(
-        label='Select a file',
-        help_text='max. 42 megabytes'
-    )
+class Up_fileForm(forms.ModelForm):
+    class Meta:
+        model = Up_file
+        fields = ['file_upload']
+    def clean_file_upload(self):
+        file = self.cleaned_data.get('file_upload', False)
+        if file:
+            if file.size > 4*1024*1024:
+                raise ValidationError("File Must be less then 4MB")
+            return file
+        else:
+            raise ValidationError("Couldn't read uploaded file")

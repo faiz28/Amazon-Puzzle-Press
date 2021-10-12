@@ -1,4 +1,5 @@
 from django.db import models
+import datetime
 
-class Document(models.Model):
-    file_upload = models.FileField(upload_to='documents/%Y/%m/%d')
+class Up_file(models.Model):
+    file_upload = models.FileField(upload_to="model/file")
