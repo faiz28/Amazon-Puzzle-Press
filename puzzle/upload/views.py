@@ -6,7 +6,7 @@ from .models import Up_file
 # Create your views here.
 def upload(request):
     if request.method == 'POST' :
-        try:
+        if request.POST.get("form_type") == 'formOne':
             form = Up_fileForm(request.POST , request.FILES )
             if form.is_valid():
                 form.save()
@@ -15,8 +15,8 @@ def upload(request):
             pdf_file = Up_file.objects.last()
             
             return render(request, 'upload.html', {'form':form,'filename':filename,'pdf_file':pdf_file})
-        except MultiValueDictKeyError:
-            myfile = False
+        elif request.POST.get("form_type") == 'formTwo':
+            return redirect('home')
     else:
         form=Up_fileForm()
         pdf_file = Up_file.objects.last()

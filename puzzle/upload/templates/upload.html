@@ -1,4 +1,4 @@
-    {%extends 'base.html' %} {%block content%} 
+{%extends 'base.html' %} {%block content%} 
 {% load static %}
 
 
@@ -33,7 +33,7 @@
                 <input type="file" name="file_upload" required="" id="id_file_upload" accept="application/doc,application/txt,application/pdf,application/vnd.ms-excel">
                 </p>
                 </div>
-                <button type="submit">Upload</button>
+                <button type="submit"  name="form_type" value="formOne">Upload</button>
             </form>
           </div>
         </div>
@@ -62,19 +62,59 @@
           </div>
         </div>
       </div>
+
+      {% comment %} from create {% endcomment %}
+
+      
       <div class="col-lg-6 col-md-6 col-sm-12 mb-12">
         <div class="card match-height">
           <div class="card-body">
-            Which page are you want to read:
+          <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+           <h4> Which page are you want to read:</h4>
             <div class="row">
                 <div class="col-md-6 ">
                 start page : <input type='number'>
                 </div>
                 <div class="col-md-6 ">
-                last page : <input type='number'
+                last page : <input type='number'>
                 </div>
             </div>
+            <br>
+            <h4> Word size:</h4>
+            <div class="row">
+                <div class="col-md-6 ">
+                Min length : <input type='number' placeholder =  "minimum 3 character">
+                </div>
+                <div class="col-md-6 ">
+                Max length : <input type='number' placeholder =  "maximum 12 character">
+                </div>
+            </div>
+
+            <br>
+            <h4>Number of Word par file:</h4>
+            <div class="row">
+                <div class="col-md-6 ">
+                <input type='number' placeholder =  "minimum 3 character">
+                </div>
+            </div>
+            <br>
+            <h4>Number of file:</h4>
+            <div class="row">
+                <div class="col-md-12 ">
+                <input type='number' placeholder =  "minimum 3 character">
+                </div>
+            </div>
+
+            <br>
+            <div class="row">
+                <div class="col-md-12 text-center">
+                <button type="submit" class="bg-primary" name="form_type" value="formTwo"> Submit</button>
+                </div>
+            </div>
+            
           </div>
+          </form>
         </div>
       </div>
       
