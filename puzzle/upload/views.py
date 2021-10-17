@@ -145,40 +145,74 @@ def make_file(str_p):
             pdf_num += 1
             if pdf_num<=500: 
                 f = open('./media/file/file'+str(pdf_num)+'.txt', 'w')
+    pdfFileObj.close()
+    
 def  clear_file(str_p):
     # str_p = str_p+"/*.txt"
     for file in glob.glob(str_p):
         print(file)
 
+
 # Create your views here.
 def upload(request):
+    form=Up_fileForm()
     if request.method == 'POST' :
+        
         if request.POST.get("form_type") == 'formOne':
             form = Up_fileForm(request.POST , request.FILES )
             if form.is_valid():
                 form.save()
             myfile = request.FILES['file_upload']
-            filename =myfile.name
+            
             pdf_file = Up_file.objects.last()
             
-            return render(request, 'upload.html', {'form':form,'filename':filename,'pdf_file':pdf_file})
+            return render(request, 'upload.html', {'form':form,'pdf_file':pdf_file})
         elif request.POST.get("form_type") == 'formTwo':
-            # read pdf file
+            # pdf file location red
             pdf_file = Up_file.objects.last()
-
-            # for i in pdf_file:
-            #     print(i.file_upload)
             str_p = str(pdf_file.file_upload)
             str_p = "./media/"+str_p
-            # clear_file(str_p)
+            # produce file 
             make_file(str_p)
 
-
+            # check all position value
+            error = []
+            print("dfdfdfdf")
+            end_page = -1
+            min_char = int(request.POST.get('mi_c'))
+            max_char = int(request.POST.get('mx_c')) 
+            start_page = int(request.POST.get('start_pg'))
+            end_page = request.POST.get('end_pg')
+            Num_of_word = int(request.POST.get('npw'))
+            Num_of_file = int(request.POST.get('num_file'))
             
+            pdfFileObj = open(str_p,'rb')
+            pdfReader = PyPDF2.PdfFileReader(pdfFileObj)
+            pages = pdfReader.numPages
+            pdfFileObj.close()
 
-            return redirect('home')
+            print(end_page)
+
+            if end_page.isalnum():
+                end_page = int(end_page)
+                if end_page>pages:
+                    end_page = pages
+            else:
+                end_page = pages
+            if(min_char>max_char) :
+                error.append("minimum character size   not greater then  maximum character size")
+            if(start_page>end_page) :
+                error.append("start page number not greater then last page number")
+            xx = int(Num_of_word)
+            if xx>26:
+                error.append("number not greater than 26")
+            if (int(Num_of_file))>500:
+                error.append("number not file not greater than 500")
+            
+            print(len(error))
+            return render(request, 'upload.html', {'form':form,'pdf_file':pdf_file,'error':error})
     else:
-        form=Up_fileForm()
+        
         pdf_file = Up_file.objects.last()
         return render(request,'upload.html',{'form':form,'pdf_file':pdf_file})  
 
