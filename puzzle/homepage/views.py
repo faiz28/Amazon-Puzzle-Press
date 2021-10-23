@@ -1,6 +1,12 @@
 from django.shortcuts import render
 import sys
 from Sudoku.Generator import *
+import os
+from os import listdir
+from os.path import isfile, join
+from pathlib import Path
+BASE_DIR = Path(__file__).resolve().parent.parent
+
 
 # Create your views here.
 def home(request):
@@ -38,6 +44,16 @@ def home(request):
 
     #     # printing out board after reduction
     #     print("The generated board after removals was: \r\n\r\n{0}".format(final))
+ 
+    path = os.path.join(BASE_DIR, 'media/file')
+    onlyfiles = [f for f in listdir(path) if isfile(join(path, f))]
+    print(os.path.join(BASE_DIR, 'media/file'))
+    total_file = 0 
+    for i in onlyfiles:
+        total_file +=1
+    
+
+
 
     
     return render(request,'index.html')  
