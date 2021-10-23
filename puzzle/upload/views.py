@@ -5,7 +5,7 @@ from .models import Up_file
 import PyPDF2,random,os,glob
 
 
-def make_file(str_p):
+def make_file(str_p ,min_char,max_char,start_page,end_page,Num_of_word,Num_of_file):
     pdfFileObj = open(str_p,'rb')
     pdfReader = PyPDF2.PdfFileReader(pdfFileObj)
     pages = pdfReader.numPages
@@ -173,7 +173,7 @@ def upload(request):
             str_p = str(pdf_file.file_upload)
             str_p = "./media/"+str_p
             # produce file 
-            make_file(str_p)
+            
 
             # check all position value
             error = []
@@ -208,7 +208,7 @@ def upload(request):
                 error.append("number not greater than 26")
             if (int(Num_of_file))>500:
                 error.append("number not file not greater than 500")
-            
+            make_file(str_p ,min_char,max_char,start_page,end_page,Num_of_word,Num_of_file)
             print(len(error))
             return render(request, 'upload.html', {'form':form,'pdf_file':pdf_file,'error':error})
     else:
