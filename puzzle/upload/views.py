@@ -39,12 +39,7 @@ def make_file(str_p ,min_char,max_char,start_page,end_page,Num_of_word,Num_of_fi
                     
                     word=""
                     upper_case = text[i].upper()
-                    # if str("\n") in upper_case:
-                    #     print(upper_case)
-                    # upper_case = ''.join(char for char in upper_case if char.isalnum())
-                    # print(upper_case)
-
-                    # 
+                    
 
                     
                     check = 0
@@ -64,10 +59,8 @@ def make_file(str_p ,min_char,max_char,start_page,end_page,Num_of_word,Num_of_fi
 
                     upper_case=upper_case.replace('\n','')
                     if upper_case.isalpha():
-                        print(upper_case)
                         if len(upper_case) >= min_char and  len(upper_case) <= max_char:
                             if wordlist.get(upper_case)==None:
-                                # print(upper_case)
                                 if file_control==1:
                                     f.write(upper_case)
                                     f.write('\n')
@@ -85,14 +78,14 @@ def make_file(str_p ,min_char,max_char,start_page,end_page,Num_of_word,Num_of_fi
                                         break
                                     else:
                                         file_control = 1
-                                        f = open('./media/file/file'+str(pdf_num)+'.txt', 'w')
+                                        f = open('./media/file/file'+str(pdf_num)+'.txt', 'a')
 
 
 
     if pdf_num<Num_of_file: 
         pdf_num -=1
         f.close()
-        f = open('./media/file/file'+str(pdf_num)+'.txt', 'w')
+        f = open('./media/file/file'+str(pdf_num)+'.txt', 'a')
 
     cnt = 0 
     while(pdf_num<=Num_of_file):
@@ -106,15 +99,12 @@ def make_file(str_p ,min_char,max_char,start_page,end_page,Num_of_word,Num_of_fi
             f.close()
             pdf_num += 1
             if pdf_num<=Num_of_file: 
-                f = open('./media/file/file'+str(pdf_num)+'.txt', 'w')
+                f = open('./media/file/file'+str(pdf_num)+'.txt', 'a')
 
 
     pdfFileObj.close()
     
-def  clear_file(str_p):
-    # str_p = str_p+"/*.txt"
-    for file in glob.glob(str_p):
-        print(file)
+
 
 # Create your views here.
 def upload(request):
@@ -135,6 +125,11 @@ def upload(request):
             # remove older file
             path = os.path.join(BASE_DIR, 'media/file')
             onlyfiles = [f for f in listdir(path) if isfile(join(path, f))]
+            for filename in onlyfiles:
+                # print(filename  )
+                total = path+"/"+filename;
+                print(total)
+                os.remove(total)
             
 
 
@@ -168,8 +163,8 @@ def upload(request):
             pdfFileObj = open(str_p,'rb')
           
             make_file(str_p ,min_char,max_char,start_page,end_page,Num_of_word,Num_of_file)
-            for i in onlyfiles:
-                os.remove(i)
+           
+
             return render(request, 'upload.html', {'form':form,'pdf_file':pdf_file})
     else:
         
