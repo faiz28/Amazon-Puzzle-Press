@@ -51,9 +51,6 @@ def home(request):
     total_file = 0 
     for i in onlyfiles:
         total_file +=1
+    print(total_file)
     
-
-
-
-    
-    return render(request,'index.html')  
+    return render(request,'index.html',{'total_file':total_file})  
