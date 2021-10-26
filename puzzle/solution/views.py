@@ -4,6 +4,8 @@ from os.path import isfile, join
 import os,sys,queue,string,random
 from reportlab.pdfgen import canvas
 from reportlab.lib.units import inch
+from django.core.files.storage import default_storage
+
 
 
 def take_pos(x,y,direction,word,puzzle,grid_size,new_x,new_y,dir_x,dir_y):
@@ -210,16 +212,14 @@ def pdf_make(c,c_sol,final_word,puzzle,gridsize,cnt):
             c_x = 0.74
         if cnt%4==2 or cnt%4==0:
             c_x = 4.41
-        
         c_y -= 0.23
         x=1.4
         y-=.4
-        
+
+
     x=3
-    c.setFont("Helvetica", 14)
-	
     y=3.1
-    
+    c.setFont("Helvetica", 14)
     total= len(final_word)
 
     for i in range(int(total/3)):
@@ -247,6 +247,25 @@ def pdf_make(c,c_sol,final_word,puzzle,gridsize,cnt):
                 inc+=1
 
 def solution(request):
+    # if request.method == 'POST':
+    #     file = request.FILES.get('wordsearch')
+    #     print(file)
+    #     if file:
+    #         path = '../wordsearch_front.pdf'
+    #         os.remove(path)
+
+    #         file.name = 'wordsearch_front.pdf'
+    #         file_name = default_storage.save(file.name, file)
+
+    #         #  Reading file from storage
+    #         print(file)
+    #         print("dfdfdf")
+    #         file = default_storage.open(file_name)
+    #         file_url = default_storage.url(file_name)
+    #     wordsearch = '../media/wordserch/wordserch.pdf'
+    #     solution = '../media/wordserch/solution/solution.pdf'
+    #     return render(request,'solution.html',{'wordsearch':wordsearch,'solution':solution})
+    # else:
     value = 1
     c_pdf = canvas.Canvas("./media/wordserch/wordserch.pdf")
     c_pdf_sol = canvas.Canvas("./media/wordserch/solution/solution.pdf")
@@ -266,7 +285,7 @@ def solution(request):
         rows,cols = grid_size+5, grid_size+5
         puzzle = [['#' for i in range(cols)] for j in range(rows)] 
 
-         # set in puzzle
+        # set in puzzle
         dic=[]
         total_word=0
         for i in range( len(s_word)):
@@ -307,7 +326,7 @@ def solution(request):
         final_word = []
         for i in range(len(word_list)):
                 x = word_list[i] in dic
-              
+            
                 if x == True:
                     final_word.append(word_list[i])
         
@@ -315,64 +334,17 @@ def solution(request):
         print("total word : ")
         print(total_word)
         pdf_make(c_pdf,c_pdf_sol,final_word,puzzle,grid_size,value)
-        
-        value += 1
-        
 
-        # q1 = queue.Queue()
-
-        # for i in range(len(sort_word)):
-        #         x = sort_word[i] in dic
-        #         if x==False:
-        #                 q1.put(sort_word[i])
-        # word=""
-        # if q1.empty() == False:
-        #     word = q1.get()	
-
-        # for i in  range(grid_size-1):
-        #     for j in  range(grid_size-1):
-        #             value_placement = select_pos(i,j,word,grid_size,puzzle)
-        #             if value_placement==True:
-        #                 dic.append(word)
-        #                 if q1.empty() == False:
-        #                     word = q1.get()	
-        #                 else:
-        #                         break
-        
-        # final_word = []
-        # for i in range(len(word_list)):
-        #         x = word_list[i] in dic
-        #         if x == True:
-        #             final_word.append(word_list[i])
-    
-        # final_word = []
-        # x=[]
-        # y=[]
-        # new_x=[]
-        # new_y=[]
-        # for i in range(len(word_list)):
-        #         for  xx in dic:
-        #             if(xx[0]==word_list[i]):
-        #                 print(xx[0])
-        #                 final_word.append(word_list[i])
-        #                 x.append(xx[1])
-        #                 y.append(xx[2])
-        #                 new_x.append(xx[3])
-        #                 new_y.append(xx[4])
-        #                 break
-                        
-                    # if x == True:
-                    #     final_word.append(word_list[i])
-            # print_puzzle(puzzle,grid_size)
-        # pdf_make(c_pdf,final_word,puzzle,grid_size,count,   c_pdf_sol,x,y,new_x,new_y)
-        
         c_pdf.showPage()
         if value%4==0:
             c_pdf_sol.showPage()
+        value += 1
             
         # count += 1
     c_pdf.save()
     c_pdf_sol.save()
+    
 
-
-    return render(request,'solution.html')
+    wordsearch = '../media/wordserch/wordserch.pdf'
+    solution = '../media/wordserch/solution/solution.pdf'
+    return render(request,'solution.html',{'wordsearch':wordsearch,'solution':solution})

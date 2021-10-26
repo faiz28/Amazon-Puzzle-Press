@@ -10,8 +10,8 @@ class Up_fileForm(forms.ModelForm):
     def clean_file_upload(self):
         file = self.cleaned_data.get('file_upload', False)
         if file:
-            if file.size > 4*1024*1024:
-                raise ValidationError("File Must be less then 4MB")
+            if file.size > 20*1024*1024:
+                raise ValidationError("File Must be less then 20MB")
             return file
         else:
             raise ValidationError("Couldn't read uploaded file")
