@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 from pathlib import Path
 import os
 
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
@@ -84,9 +85,9 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'puzzle',
-        'USER': 'root',
-        'PASSWORD': '',
-        'HOST': '127.0.0.1'
+        'USER': 'faiz',
+        'PASSWORD': 'Faiz@6761',
+        'HOST': 'localhost'
     }
 }
 
