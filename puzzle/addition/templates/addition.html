@@ -13,7 +13,7 @@
             <div class="col-lg-6 col-md-6 col-sm-12 mb-12">
                 <div class="card match-height">
                     <div class="card-body">
-                        <iframe id="iframe_pdf" src=" {{ pdf_file.file_upload.url}}" style="width:100%; height:400px;" frameborder="0"></iframe>
+                        <iframe id="iframe_pdf" src=" {{ addition }}" style="width:100%; height:400px;" frameborder="0"></iframe>
                     </div>
                 </div>
             </div>
@@ -142,4 +142,11 @@
         </div>
 </section>
 <!-- /topics -->
+
+<a href="{%url 'inner-design'%}">
+    <div class="scroll-top">
+       <button type="button" class="btn btn-primary">
+           <i class="fa fa-angle-up"> practice</i>
+    </div>
+</a>
 {% endblock %}
