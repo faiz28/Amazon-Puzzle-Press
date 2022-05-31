@@ -1,0 +1,50 @@
+{%extends 'base.html' %} {%block content%} {%load static%}
+
+
+
+<!-------Sign Up Form--------->
+<div class="wrapper fadeInDown">
+    <div id="formContent">
+        <!-- Tabs Titles -->
+
+        <!-- Icon -->
+
+        <div class="fadeIn first">
+            <!--<img src="#" id="icon" alt="User Icon" />-->
+            <div id="icon" style="padding: 10px;width: auto; font-size: 32px;">Sign up</div>
+            {% if error%}
+
+            <div class="text" style="color: brown;"><span class="theme_color"><h5>{{error}}</h5></span> </div>
+
+            {%endif%}
+
+
+        </div>
+
+
+
+        <!-- Login Form -->
+        <form method="POST">
+            {%csrf_token%}
+            <input type="text" id="login" class="fadeIn second" name="first_name" placeholder="Your Name">
+            <input type="text" id="login" class="fadeIn second" name="username" placeholder="Username">
+            <input type="text" id="login" class="fadeIn second" name="email" placeholder="xyz@gmail.com">
+            <input type="text" class="fadeIn third" name="password1" placeholder="password" id="psw" name="psw" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters"
+                required>
+
+
+            <input type="text" class="fadeIn third" name="password2" placeholder="retype password" id="psw" name="psw" required>
+
+            <input type="submit" class="fadeIn fourth" value="Sign Up">
+        </form>
+
+
+
+
+    </div>
+</div>
+
+<br>
+<br>
+<br>
+<br>{% endblock %}

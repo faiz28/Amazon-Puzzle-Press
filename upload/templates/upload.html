@@ -1,0 +1,133 @@
+{%extends 'base.html' %} {%block content%} {% load static %}
+
+
+
+<!-- topics -->
+
+
+
+<section class="section pb-0">
+    <div class="container">
+        {% comment %}
+        <h2 class="section-title">Browse Your Topics</h2> {% endcomment %}
+        <br>
+        <div class="row">
+            <!-- topic -->
+
+            <!-- topic -->
+            <div class="col-lg-12  ">
+                <div class="card match-height">
+                    <div class="card-body">
+                        <i class="card-icon ti-package mb-4"></i>
+                        <h3 class="card-title h4">Choose your File</h3>
+                        <form method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="fieldWrapper">
+                                {% if form.errors %} {% for field in form %} {% for error in field.errors %}
+                                <div class="alert alert-danger">
+                                    <strong>{{ error|escape }}</strong>
+                                </div>
+                                {% endfor %} {% endfor %} {% endif %}
+                                <p>
+                                    <input type="file" name="file_upload" required="" id="id_file_upload" accept="application/doc,application/txt,application/pdf,application/vnd.ms-excel">
+                                </p>
+                            </div>
+                            <button type="submit" name="form_type" value="formOne">Upload</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <!-- topic -->
+
+        </div>
+</section>
+<!-- /topics -->
+
+
+<!-- topics -->
+<section class="section pb-0">
+    <div class="container">
+        <br>
+        <h2 class="section-title">Make your File</h2>
+        <hr>
+        <div class="row">
+            <!-- topic -->
+
+            <!-- topic -->
+            <div class="col-lg-6 col-md-6 col-sm-12 mb-12">
+                <div class="card match-height">
+                    <div class="card-body">
+                        <iframe id="iframe_pdf" src=" {{ pdf_file.file_upload.url}}" style="width:100%; height:400px;" frameborder="0"></iframe>
+                    </div>
+                </div>
+            </div>
+
+            {% comment %} from create {% endcomment %}
+
+
+            <div class="col-lg-6 col-md-6 col-sm-12 mb-12">
+                <div class="card match-height">
+                    <div class="card-body">
+                        <form method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <h4> Which page are you want to read:</h4>
+                            <div class="row">
+                                <div class="col-md-6 ">
+                                    start page : <input type='number' name='start_pg' min="0" value="1" required>
+                                </div>
+                                <div class="col-md-6 ">
+                                    last page : <input type='number' name='end_pg'>
+                                </div>
+                            </div>
+                            <br>
+                            <h4> Word character word:</h4>
+                            <div class="row">
+                                <div class="col-md-6 ">
+                                    Min length : <input type='number' placeholder="minimum 3 character" name='mi_c' min="3" max="12" value="3" required>
+                                </div>
+                                <div class="col-md-6 ">
+                                    Max length : <input type='number' placeholder="maximum 12 character" name='mx_c' min="3" max="12" value="12" required>
+                                </div>
+                            </div>
+
+                            <br>
+                            <h4>Number of Word par file:</h4>
+                            <div class="row">
+                                <div class="col-md-6 ">
+                                    <input type='number' placeholder="minimum 3 character" name='npw' min="3" max="40" value="26" required>
+                                </div>
+                            </div>
+                            <br>
+                            <h4>Number of file:</h4>
+                            <div class="row">
+                                <div class="col-md-12 ">
+                                    <input type='number' placeholder="minimum 3 character" name='num_file' min="1" max="500" value="500" required>
+                                </div>
+                            </div>
+                            <!-- <h4>How much puzzle per page:</h4>
+                            <div class="row">
+                                <div class="col-md-12 ">
+                                    <input type='number' placeholder="minimum 3 character" name='num_file' min="1" max="500" value="500" required>
+                                </div>
+                            </div> -->
+
+                            <br>
+                            <div class="row">
+                                <div class="col-md-12 text-center">
+                                    <button type="submit" class="bg-primary" name="form_type" value="formTwo"> Submit</button>
+                                </div>
+                            </div>
+
+                    </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- topic -->
+
+        </div>
+</section>
+<!-- /topics -->
+
+
+{% for i in error %} {{i}} {%endfor%} {% endblock %}
