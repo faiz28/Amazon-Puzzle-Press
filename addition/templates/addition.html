@@ -1,0 +1,143 @@
+{%extends 'base.html' %} {%block content%} {%load static%}
+
+<!-- topics -->
+<section class="section pb-0">
+    <div class="container">
+        <br>
+        <h2 class="section-title">Make your File</h2>
+        <hr>
+        <div class="row">
+            <!-- topic -->
+
+            <!-- topic -->
+            <div class="col-lg-6 col-md-6 col-sm-12 mb-12">
+                <div class="card match-height">
+                    <div class="card-body">
+                        <iframe id="iframe_pdf" src=" {{ addition }}" style="width:100%; height:400px;" frameborder="0"></iframe>
+                    </div>
+                </div>
+            </div>
+
+            {% comment %} from create {% endcomment %}
+
+
+            <div class="col-lg-6 col-md-6 col-sm-12 mb-12">
+                <div class="card match-height">
+                    <div class="card-body">
+
+
+
+
+                        <form method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            {% comment %} <h3>Strating day :</h3>
+                            <input type='number' name='day' value='1'> {% endcomment %}
+                            <div class="col-md-6 ">
+                                <a href="{%url 'inner-design'%}">
+                                    <div class="scroll-top">
+                                       <button type="button" class="btn btn-primary">
+                                           <i class="fa fa-angle-up"> Config design</i>
+                                    </div>
+                                </a>
+                            </div>
+                            {% comment %} <div class="col-md-6 ">
+                                <input type="Radio" Name="answer" Value="pp">Show Answer
+                            </div> {% endcomment %}
+
+                            {% comment %} <h3>click button for create new </h3> {% endcomment %}
+
+                            <br>
+
+                            <div id="newElementId"></div>
+
+
+
+                            <br>
+                            <div class="row">
+                                <div class="col-md-12 text-center" id="dynamicCheck">
+                                    <input type="button" class="btn btn-outline-primary" value="Create Worksheet" onclick="createNewElement();" />
+                                </div>
+                            </div>
+                            
+                            <br>
+                            <div class="row">
+                                <div class="col-md-12 text-center">
+                                    <button type="submit" class="bg-primary" name="form_type" value="formOne"> Submit</button>
+                                </div>
+                            </div>
+
+
+                    </div>
+                    </form>
+                    <script>
+                        var count = 0;
+
+                        function createNewElement() {
+                            // First create a DIV element.
+                            count += 1
+                            var txtNewInputBox = document.createElement('div');
+
+                            let newHtml = ''
+                            newHtml += "<h1 style='text-align: center;'>Math worksheet : " + count + "</h1>";
+                            newHtml += "<hr>";
+                            newHtml += "<h5> Digit Limit:</h5>";
+                            newHtml += "<div class='row'>"
+                            newHtml += "<div class='col-md-6 ''>"
+                            newHtml += " Min length : <input type='number' name='min" + count + "'value = '0' required>";
+                            newHtml += "</div>"
+                            newHtml += "<div class='col-md-6 ''>"
+                            newHtml += " Maximum : <input type='number' name='max" + count + "' value='12' required>";
+                            newHtml += "</div>"
+                            newHtml += "</div>"
+                            newHtml += "<br>";
+                            newHtml += "<br";
+                            newHtml += "<div class='row'>";
+                            newHtml += "<div class='col-md-6 '>"
+                            newHtml += "<h5> Number of Page:</h5>"
+                            newHtml += " <input type='number' name='page" + count + "' value='12' required>"
+                            newHtml += "</div>"
+                            newHtml += "<div class='col-md-6 ''>"
+                            newHtml += "<h5> Select option:</h5>"
+                            newHtml += " <select class='form-select' aria-label='Default select example' name = 'operation" + count + "' >"
+                            newHtml += " <option selected value = 'addition'>Addition</option>"
+                            newHtml += " <option value='subtraction'>Subtraction</option>"
+                            newHtml += " <option value='multiplication'>Multiplication</option>"
+                            newHtml += " <option value='division'>Division</option>"
+                            newHtml += " <option value='add_sub'>Addition and Subtraction Mixed</option>"
+                            newHtml += " <option value='mul_div'>Multiplication and divisition Mixed</option>"
+                            newHtml += " <option value='all_mixed'>All Mixed</option>"
+                            newHtml += " </select>"
+                            newHtml += "</div>"
+                            newHtml += "</div>"
+                            newHtml += "<br>"
+                            newHtml += "<br>"
+                            newHtml += "<hr style = 'margin-top:10px; border: 5px solid green;'>"
+                            newHtml += "<input type='hidden' name='total_value' value='" + count + "' required>"
+
+
+
+                            // Then add the content (a new input box) of the element.
+                            txtNewInputBox.innerHTML = newHtml;
+
+
+                            // Finally put it where it is supposed to appear.
+                            document.getElementById("newElementId").appendChild(txtNewInputBox);
+                        }
+                    </script>
+
+
+                    <br>
+                    <br>
+                    <br>
+
+                </div>
+            </div>
+
+            <!-- topic -->
+
+        </div>
+</section>
+<!-- /topics -->
+
+
+{% endblock %}

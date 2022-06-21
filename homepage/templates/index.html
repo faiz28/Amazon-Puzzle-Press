@@ -1,0 +1,18 @@
+{%extends 'base.html' %} {%block content%} {%load static%}
+
+<h1>Homepage</h1>
+<form action="">
+    <input type="number" placeholder='10'>
+    <a href="">SUDOUKU</a>
+</form>
+<br>
+<form action="">
+    <input type="number" value='{{total_file}}'>
+    <a href="{%url 'solution'%}">WORDSEARCH</a>
+</form>
+<hr>
+<a href="{% url 'addition'%}">Math Worksheet</a> 
+<hr>
+<a href="{% url 'wordsearch'%}">WORDSEARCH</a> 
+<hr>
+{% endblock %}

@@ -1,0 +1,209 @@
+{%extends 'base.html' %} {%block content%} {%load static%}
+
+<!-- topics -->
+<section class="section pb-0">
+    <div class="container">
+        <br>
+        <a href="{%url 'wordsearch'%}">
+            <div class="scroll-top">
+               <button type="button" class="btn btn-primary">
+                   <i class="fa fa-angle-up"> Back page</i>
+            </div>
+        </a>
+        <h2 class="section-title">Make your File</h2>
+        <hr>
+        <div class="row">
+
+
+            <!-- topic -->
+
+            <!-- topic -->
+            <div class="col-lg-6 col-md-6 col-sm-12 mb-12">
+                <div class="card match-height">
+                    <div class="card-body">
+                        <iframe id="iframe_pdf" src=" {{ inner_design }}" style="width:100%; height:400px;" frameborder="0"></iframe>
+                    </div>
+                </div>
+            </div>
+
+             {% comment %} ################################################################################# {% endcomment %}
+             {% comment %} ################################################################################# {% endcomment %}
+             {% comment %} ################################################################################# {% endcomment %}
+             {% comment %} ################################################################################# {% endcomment %}
+            {% comment %} inner section {% endcomment %}
+            {% comment %} ################################################################################# {% endcomment %}
+            {% comment %} ################################################################################# {% endcomment %}
+            {% comment %} ################################################################################# {% endcomment %}
+            {% comment %} ################################################################################# {% endcomment %}
+
+            
+            <div class="col-lg-6 col-md-6 col-sm-12 mb-12">
+                <div class="card match-height">
+                    <div class="card-body">
+
+
+
+                        <h4>Inner section</h4>
+                       
+                            {% csrf_token %}
+                            <select class="form-select" aria-label="Default select example" name = "fonts">
+                                <option selected value = "{{info.font}}">select text font</option>
+                                <option value="AngryCyborg">AngryCyborg</option>
+                                <option value="AngryCyborg3D">AngryCyborg3D</option>
+                                <option value="AnimalCuteIcon">AnimalCuteIcon</option>
+                                <option value="DejaVuSans">DejaVuSans</option>
+                                {% comment %} <option value="ArialTh">ArialTh</option> {% endcomment %}
+                                <option value="ARIBL0">ARIBL0</option>
+                                <option value="BabyFreedom">BabyFreedom</option>
+                                <option value="Berlin">Berlin</option>
+                                <option value="Boge">Boge</option>
+                                <option value="Bold_Dragon_ttf">Bold_Dragon_ttf</option>
+                                <option value="BuzluBuz">BuzluBuz</option>
+                                <option value="Calibri">Calibri</option>
+                                <option value="Cambria">Cambria</option>
+                                <option value="cambriab">cambriab</option>
+                                <option value="CAMBRIAI">CAMBRIAI</option>
+                                <option value="CAMBRIAZ">CAMBRIAZ</option>
+                                <option value="Chainwhacks">Chainwhacks</option>
+                                <option value="Dakota_Regular">Dakota_Regular</option>
+                                <option value="DejaVuSans">DejaVuSans</option>
+                                <option value="DejaVuSans_Bold">DejaVuSans_Bold</option>
+                                <option value="DejaVuSans_BoldOblique">DejaVuSans_BoldOblique</option>
+                                <option value="DejaVuSansCondensed">DejaVuSansCondensed</option>
+                                <option value="DejaVuSansCondensed_Bold">DejaVuSansCondensed_Bold</option>
+                                <option value="DejaVuSans_Oblique">DejaVuSans_Oblique</option>
+                                <option value="DissimilarHeadlines">DissimilarHeadlines</option>
+                                <option value="DoodleCartoon_1">DoodleCartoon_1</option>
+                                <option value="Eatday">Eatday</option>
+                                <option value="EBGaramond_VariableFont_wght">EBGaramond_VariableFont_wght</option>
+                                <option value="futur">futur</option>
+                                <option value="HymalaFont">HymalaFont</option>
+                                <option value="helvetica_rounded">helvetica_rounded</option>
+                                <option value="Helvetica">Helvetica</option>
+                            
+                            </select>
+                            <br>
+
+                       
+                                
+                                <div class="row">
+                                    <div class="col-md-6"  >
+                                        <span class="input-group-text text-white bg-dark" id="basic-addon2">Word Section</span>
+                                        <br>
+                                        <div class="input-group mb-3">
+                                            <input type="number" class="form-control" placeholder="{{info.numbering_font_size}}" aria-label="Recipient's username" aria-describedby="basic-addon2" name="numbering_font_size" >
+                                            <div class="input-group-append">
+                                            <span class="input-group-text" id="basic-addon2" >Word font size</span>
+                                            </div>
+                                        </div>
+                                        {% comment %} Numbering position change {% endcomment %}
+                                        <h5>Word position</h5>
+                                        <div class="input-group mb-3">
+                                            <input type="number" class="form-control" placeholder="{{info.numbering_up_down}}" aria-label="Recipient's username" aria-describedby="basic-addon2" name="numbering_up_down" >
+                                            <div class="input-group-append">
+                                            <span class="input-group-text" id="basic-addon2" >Up-Down</span>
+                                            </div>
+                                        </div>
+                                        <div class="input-group mb-3">
+                                            <input type="number" class="form-control" placeholder="{{info.numbering_left_right}}" aria-label="Recipient's username" aria-describedby="basic-addon2" name="numbering_left_right" >
+                                            <div class="input-group-append">
+                                            <span class="input-group-text" id="basic-addon2" >Right-Left</span>
+                                            </div>
+                                        </div>
+                                       
+                                    </div>
+
+
+
+                                    <div class="col-md-6"  >
+                                        {% comment %} Word Section {% endcomment %}
+                                        <span class="input-group-text text-white bg-dark" id="basic-addon2">Alphabate Section</span>
+                                        <br>
+                                        <div class="input-group mb-3">
+                                            <input type="number" class="form-control" placeholder="{{info.digit_font_size}}" aria-label="Recipient's username" aria-describedby="basic-addon2" name="digit_font_size" >
+                                            <div class="input-group-append">
+                                            <span class="input-group-text" id="basic-addon2">Font size</span>
+                                            </div>
+                                            <br>    
+                                           
+                                        </div>
+                                        <div class="input-group mb-3">
+                                            <input type="number" class="form-control" placeholder="{{info.digit_space}}" aria-label="Recipient's username" aria-describedby="basic-addon2" name="digit_space" >
+                                            <div class="input-group-append">
+                                            <span class="input-group-text" id="basic-addon2">Space Left Right</span>
+                                            </div>
+                                        </div>
+                                        <div class="input-group mb-3">
+                                            <input type="number" class="form-control" placeholder="{{info.digit_space}}" aria-label="Recipient's username" aria-describedby="basic-addon2" name="digit_space" >
+                                            <div class="input-group-append">
+                                            <span class="input-group-text" id="basic-addon2">Space up Down</span>
+                                            </div>
+                                        </div>
+
+                                     
+                                        <div class="row">
+                                            {% comment %} <div class="col-md-6"  >   {% endcomment %}
+                                                <div class="input-group mb-3">
+                                                    <input type="number" class="form-control" placeholder="{{info.digit_up_down}}" aria-label="Recipient's username" aria-describedby="basic-addon2" name="digit_up_down" >
+                                                    <div class="input-group-append">
+                                                    <span class="input-group-text" id="basic-addon2">Up-down</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            {% comment %} <div class="col-md-6"  >   {% endcomment %}
+                                                <div class="input-group mb-3">
+                                                    <input type="number" class="form-control" placeholder="{{info.digit_left_right}}" aria-label="Recipient's username" aria-describedby="basic-addon2" name="digit_left_right" >
+                                                    <div class="input-group-append">
+                                                    <span class="input-group-text" id="basic-addon2">Left-right</span>
+                                                    </div>
+                                                </div>
+                                                {% comment %} digit space {% endcomment %}
+
+
+                                                <div class="input-group mb-3">
+                                                    <input type="number" class="form-control" placeholder="{{info.prob_per_row}}" value = {{info.prob_per_row}} aria-label="Recipient's username" aria-describedby="basic-addon2" name="prob_per_row" >
+                                                    <div class="input-group-append">
+                                                    <span class="input-group-text" id="basic-addon2">prob per row</span>
+                                                    </div>
+                                                </div>
+                                                <div class="input-group mb-3">
+                                                    <input type="number" class="form-control" placeholder="{{info.prob_per_col}}" value = {{info.prob_per_col}} aria-label="Recipient's username" aria-describedby="basic-addon2" name="prob_per_col" >
+                                                    <div class="input-group-append">
+                                                    <span class="input-group-text" id="basic-addon2">prob per col</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                        </div>  
+                                        
+                                    </div>
+                                    
+                                </div>                                
+                            </div>
+
+
+                            <div class="row">
+                                <div class="col-md-12 text-center">
+                                    <div class="scroll-top">
+                                        <button  type="submit" class="bg-primary" name="form_type" value="formOne">
+                                            <i class="fa fa-angle-up"> practice</i>
+                                    </div>
+                                </div>
+                            </div>
+
+                    </div>
+                    </form>
+                   
+                    <br>
+                    <br>
+                    <br>
+
+                </div>
+            </div>
+
+            <!-- topic -->
+
+        </div>
+</section>
+
+{% endblock %}
