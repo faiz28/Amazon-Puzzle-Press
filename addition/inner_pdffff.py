@@ -158,7 +158,7 @@ class in_pdf:
         pdf.setFont(font, 23+f_i_d)
         pdf.setFillColor(HexColor('#131921'))
         pdf.roundRect(x*inch,(y-0.08)*inch,2.1*inch,.69*inch,.2*inch, fill=True, stroke=False)
-        pdf.drawImage(logo,  x*inch, (y+0.1)*inch, 0.8*inch,0.8*inch ,mask='auto')
+        pdf.drawImage(logo,  x*inch, (y+0.02)*inch, 0.8*inch,0.8*inch ,mask='auto')
         # puzzle_per_page = int(puzzle_per_page)
         # pdf.setFillColor(HexColor('#ffffff'))
         pdf.setFillColor(HexColor('#ffffff'))

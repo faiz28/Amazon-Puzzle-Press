@@ -23,7 +23,7 @@ def page_title_set_up(pdf,font,f_i_d,h_u_d,h_l_r,cnt,min_val,max_val,day,operati
     logo = ImageReader('./media/addition/image1.png')
     pdf.setFillColor(HexColor('#131921'))
     pdf.roundRect(x*inch,(y-0.08)*inch,2.1*inch,.69*inch,.2*inch, fill=True, stroke=False)
-    pdf.drawImage(logo,  x*inch, (y+0.1)*inch, 0.8*inch,0.8*inch ,mask='auto')
+    pdf.drawImage(logo,  x*inch, (y+0.02)*inch, 0.8*inch,0.8*inch ,mask='auto')
     pdf.setFillColor(HexColor('#ffffff'))
     s = "Day %d"%(day)
     pdf.drawString((x+0.7)*inch,(y+0.3)*inch,s)

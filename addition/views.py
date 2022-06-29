@@ -69,9 +69,10 @@ def addition(request):
             merger = PdfFileMerger()
             for i in range(int(total)):
                 merger.append("./media/addition/addition%d.pdf"%i)
-                os.remove("./media/addition/addition%d.pdf"%i)
             merger.write("./media/addition/addition.pdf")
             merger.close()
+            for i in range(int(total)):
+                os.remove("./media/addition/addition%d.pdf"%i)
             # title page ready
             Solution.title_pdf(dic,day)
             Solution.solution_pdf(result,dic,day)
@@ -111,6 +112,7 @@ def inner_design(request):
     
     
     info = inner_page.objects.all().first()
+    print(info)
     # print(info.header_fonts)
     # print("hello ",info['header_fonts'])
     # header section

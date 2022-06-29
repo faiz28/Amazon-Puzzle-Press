@@ -35,8 +35,9 @@ def take_pos(x,y,direction,word,puzzle,grid_size,new_x,new_y,dir_x,dir_y):
 					store_x +=dir_x
 					store_y +=dir_y
 			return False 
-	
 	return True
+
+
 def print_puzzle(puzzle,grid_size):
     cnt=0
     for i in range(grid_size):

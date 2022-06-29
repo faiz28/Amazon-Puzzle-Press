@@ -44,7 +44,7 @@
 
 
                         <h4>Inner section</h4>
-                       
+                        <form method="post" enctype="multipart/form-data">
                             {% csrf_token %}
                             <select class="form-select" aria-label="Default select example" name = "fonts">
                                 <option selected value = "{{info.font}}">select text font</option>
@@ -91,7 +91,7 @@
                                         <span class="input-group-text text-white bg-dark" id="basic-addon2">Word Section</span>
                                         <br>
                                         <div class="input-group mb-3">
-                                            <input type="number" class="form-control" placeholder="{{info.numbering_font_size}}" aria-label="Recipient's username" aria-describedby="basic-addon2" name="numbering_font_size" >
+                                            <input type="number" class="form-control" placeholder="{{info.numbering_font_size}}" aria-label="Recipient's username" aria-describedby="basic-addon2" name="word_font_size" >
                                             <div class="input-group-append">
                                             <span class="input-group-text" id="basic-addon2" >Word font size</span>
                                             </div>
@@ -99,13 +99,13 @@
                                         {% comment %} Numbering position change {% endcomment %}
                                         <h5>Word position</h5>
                                         <div class="input-group mb-3">
-                                            <input type="number" class="form-control" placeholder="{{info.numbering_up_down}}" aria-label="Recipient's username" aria-describedby="basic-addon2" name="numbering_up_down" >
+                                            <input type="number" class="form-control" placeholder="{{info.numbering_up_down}}" aria-label="Recipient's username" aria-describedby="basic-addon2" name="word_up_down" >
                                             <div class="input-group-append">
                                             <span class="input-group-text" id="basic-addon2" >Up-Down</span>
                                             </div>
                                         </div>
                                         <div class="input-group mb-3">
-                                            <input type="number" class="form-control" placeholder="{{info.numbering_left_right}}" aria-label="Recipient's username" aria-describedby="basic-addon2" name="numbering_left_right" >
+                                            <input type="number" class="form-control" placeholder="{{info.numbering_left_right}}" aria-label="Recipient's username" aria-describedby="basic-addon2" name="word_left_right" >
                                             <div class="input-group-append">
                                             <span class="input-group-text" id="basic-addon2" >Right-Left</span>
                                             </div>
@@ -120,7 +120,7 @@
                                         <span class="input-group-text text-white bg-dark" id="basic-addon2">Alphabate Section</span>
                                         <br>
                                         <div class="input-group mb-3">
-                                            <input type="number" class="form-control" placeholder="{{info.digit_font_size}}" aria-label="Recipient's username" aria-describedby="basic-addon2" name="digit_font_size" >
+                                            <input type="number" class="form-control" placeholder="{{info.digit_font_size}}" aria-label="Recipient's username" aria-describedby="basic-addon2" name="alphabate_font_size" >
                                             <div class="input-group-append">
                                             <span class="input-group-text" id="basic-addon2">Font size</span>
                                             </div>
@@ -128,13 +128,13 @@
                                            
                                         </div>
                                         <div class="input-group mb-3">
-                                            <input type="number" class="form-control" placeholder="{{info.digit_space}}" aria-label="Recipient's username" aria-describedby="basic-addon2" name="digit_space" >
+                                            <input type="number" class="form-control" placeholder="{{info.digit_space}}" aria-label="Recipient's username" aria-describedby="basic-addon2" name="alphabate_space_l_r" >
                                             <div class="input-group-append">
                                             <span class="input-group-text" id="basic-addon2">Space Left Right</span>
                                             </div>
                                         </div>
                                         <div class="input-group mb-3">
-                                            <input type="number" class="form-control" placeholder="{{info.digit_space}}" aria-label="Recipient's username" aria-describedby="basic-addon2" name="digit_space" >
+                                            <input type="number" class="form-control" placeholder="{{info.digit_space}}" aria-label="Recipient's username" aria-describedby="basic-addon2" name="alphabate_space_u_d" >
                                             <div class="input-group-append">
                                             <span class="input-group-text" id="basic-addon2">Space up Down</span>
                                             </div>
@@ -144,7 +144,7 @@
                                         <div class="row">
                                             {% comment %} <div class="col-md-6"  >   {% endcomment %}
                                                 <div class="input-group mb-3">
-                                                    <input type="number" class="form-control" placeholder="{{info.digit_up_down}}" aria-label="Recipient's username" aria-describedby="basic-addon2" name="digit_up_down" >
+                                                    <input type="number" class="form-control" placeholder="{{info.digit_up_down}}" aria-label="Recipient's username" aria-describedby="basic-addon2" name="position_up_down" >
                                                     <div class="input-group-append">
                                                     <span class="input-group-text" id="basic-addon2">Up-down</span>
                                                     </div>
@@ -152,7 +152,7 @@
                                             </div>
                                             {% comment %} <div class="col-md-6"  >   {% endcomment %}
                                                 <div class="input-group mb-3">
-                                                    <input type="number" class="form-control" placeholder="{{info.digit_left_right}}" aria-label="Recipient's username" aria-describedby="basic-addon2" name="digit_left_right" >
+                                                    <input type="number" class="form-control" placeholder="{{info.digit_left_right}}" aria-label="Recipient's username" aria-describedby="basic-addon2" name="position_left_right" >
                                                     <div class="input-group-append">
                                                     <span class="input-group-text" id="basic-addon2">Left-right</span>
                                                     </div>
@@ -161,15 +161,15 @@
 
 
                                                 <div class="input-group mb-3">
-                                                    <input type="number" class="form-control" placeholder="{{info.prob_per_row}}" value = {{info.prob_per_row}} aria-label="Recipient's username" aria-describedby="basic-addon2" name="prob_per_row" >
+                                                    <input type="number" class="form-control" placeholder="{{info.prob_per_row}}" value = {{info.prob_per_row}} aria-label="Recipient's username" aria-describedby="basic-addon2" name="row" >
                                                     <div class="input-group-append">
-                                                    <span class="input-group-text" id="basic-addon2">prob per row</span>
+                                                    <span class="input-group-text" id="basic-addon2">row</span>
                                                     </div>
                                                 </div>
                                                 <div class="input-group mb-3">
-                                                    <input type="number" class="form-control" placeholder="{{info.prob_per_col}}" value = {{info.prob_per_col}} aria-label="Recipient's username" aria-describedby="basic-addon2" name="prob_per_col" >
+                                                    <input type="number" class="form-control" placeholder="{{info.prob_per_col}}" value = {{info.prob_per_col}} aria-label="Recipient's username" aria-describedby="basic-addon2" name="col" >
                                                     <div class="input-group-append">
-                                                    <span class="input-group-text" id="basic-addon2">prob per col</span>
+                                                    <span class="input-group-text" id="basic-addon2"> col</span>
                                                     </div>
                                                 </div>
                                             </div>
