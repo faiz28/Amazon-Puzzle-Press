@@ -104,7 +104,7 @@ def select_pos(x,y,word,grid_size_row,grid_size_col,puzzle):
             return True,x,y,new_x,new_y
     return False,x,y,new_x,new_y
 
-def pdf_make(c,final_word,puzzle,grid_size_row,grid_size_col,cnt,alphabate_space_l_r,alphabate_space_u_d):
+def pdf_make(c,word_font_size,word_up_down,word_left_right,word_l_r_s,word_u_d_s,final_word,puzzle,grid_size_row,grid_size_col,cnt,alphabate_space_l_r,alphabate_space_u_d,alphabate_up_down,alphabate_left_right):
     # for wordsearch puzzle
     
     print("alphabate_space_l_r = ",alphabate_space_l_r)
@@ -120,13 +120,13 @@ def pdf_make(c,final_word,puzzle,grid_size_row,grid_size_col,cnt,alphabate_space
     x = 4.5 -((grid_size_col*0.42)/2)
     y=9.4
     inc=0
-    c.roundRect((x-0.25)*inch,(y-(grid_size_row*0.42)+0.4)*inch,(grid_size_col*0.42 - (alphabate_space_l_r*0.4))*inch,(grid_size_row*0.42)*inch, 1, stroke=1, fill=0)
+    c.roundRect((x-0.25)*inch,(y-(grid_size_row*0.42)+0.4)*inch,(grid_size_col*alphabate_space_l_r*1.1)*inch,(grid_size_row*0.42)*inch, 1, stroke=1, fill=0)
     # c_sol.rect(4.3*inch,5.5*inch,3.56*inch,3.56*inch, fill=0)
     c.setFont("Times-Roman", 20)
     
     
-
-    
+    x+=alphabate_left_right
+    y+=alphabate_up_down
     for i in range(grid_size_row):
         for j in range(grid_size_col):
             if puzzle[i][j]!='#':
@@ -136,38 +136,36 @@ def pdf_make(c,final_word,puzzle,grid_size_row,grid_size_col,cnt,alphabate_space
                 c.drawString(x*inch,y*inch,ran )
                 
             x+=alphabate_space_l_r
-        x=4.5 -((grid_size_col*0.42)/2)
+        x=4.5 -((grid_size_col*0.42)/2)+alphabate_left_right
         y-=alphabate_space_u_d
 
 
-    x=3
+    x= 2
     y=9.4 - grid_size_row*0.42
-    c.setFont("Helvetica", 14)
+    c.setFont("Helvetica", word_font_size)
     total= len(final_word)
 
-    for i in range(int(total/3)):
+    
+    if total%3!=0:
+        length= int(total/3)+1
+    else: 
+        length = int(total/3)
+    
+    print("Word left right ",word_l_r_s)
+    for i in range(length):
         for j in range(3):
+            if inc>=total:
+                break
             if j==0:
-                c.drawString(1.25*inch,y*inch, str(final_word[inc].strip()))
+                c.drawString(x*inch,y*inch, str(final_word[inc].strip()))
                 inc+=1
             if j==1:
-                c.drawString(3.5*inch,y*inch, str(final_word[inc].strip()))
+                c.drawString((x+word_l_r_s)*inch,y*inch, str(final_word[inc].strip()))
                 inc+=1
             if j==2:
-                c.drawString(5.79*inch,y*inch, str(final_word[inc].strip()))
+                c.drawString((x+(word_l_r_s*2))*inch,y*inch, str(final_word[inc].strip()))
                 inc+=1
-        y-=.3
-    extra = total%3
-    for j in range(extra):
-            if j==0:
-                c.drawString(1.25*inch,y*inch, str(final_word[inc].strip()))
-                inc+=1
-            if j==1:
-                c.drawString(3.5*inch,y*inch, str(final_word[inc].strip()))
-                inc+=1
-            if j==2:
-                c.drawString(5.79*inch,y*inch, str(final_word[inc].strip()))
-                inc+=1
+        y-=word_u_d_s
 
 def delete_all(check):
     xx = os.listdir('./media/wordsearch/')
@@ -179,7 +177,7 @@ def delete_all(check):
             
     
 class design:
-    def make_pdf(fonts,word_font_size,word_left_right,word_up_down,alphabate_font_size,alphabate_space_l_r,alphabate_space_u_d,position_up_down,position_left_right,row, col):
+    def make_pdf(font,word_font_size,word_left_right,word_up_down,word_u_d_s,word_l_r_s,alphabate_font_size,alphabate_space_l_r,alphabate_space_u_d,alphabate_up_down,alphabate_left_right,row, col):
         rand = random.randint(100000,10000000)
         pdf  =  canvas.Canvas("./media/wordsearch/%d_inner_design.pdf"%rand)
         pdf.setPageSize((8.5 * inch, 11 * inch))
@@ -203,6 +201,33 @@ class design:
             grid_size_col  = int(col)
         else:
             grid_size_col = 10
+            
+            
+        # word positioning
+        if word_font_size:
+            word_font_size = 16+int(word_font_size)*0.1
+        else:
+            word_font_size = 16
+        if word_up_down:
+            word_up_down = int(word_up_down)*0.1
+        else:
+            word_up_down = 0
+        if word_left_right:
+            word_left_right = int(word_left_right)*0.1
+        else:
+            word_left_right = 0
+        if word_u_d_s:
+            word_u_d_s = 1.5+int(word_u_d_s)*0.1
+        else:
+            word_u_d_s = 1.5
+        if word_l_r_s:
+            word_l_r_s = 0.2+int(word_l_r_s)*0.1
+        else:
+            word_l_r_s = 0.2
+        
+        
+            
+        # alphabate
         if alphabate_space_l_r:
             alphabate_space_l_r = int(alphabate_space_l_r)*0.1
         else: 
@@ -211,6 +236,15 @@ class design:
             alphabate_space_u_d = int(alphabate_space_u_d)*0.1
         else:
             alphabate_space_u_d = 0.4
+            
+        if alphabate_up_down:
+            alphabate_up_down = int(alphabate_up_down)*0.1
+        else:
+            alphabate_up_down = 0
+        if alphabate_left_right:
+            alphabate_left_right = int(alphabate_left_right)*0.1
+        else:
+            alphabate_left_right = 0
         
             
         
@@ -266,7 +300,7 @@ class design:
         print("total word : ")
         print(total_word)
         value = 1
-        pdf_make(pdf,final_word,puzzle,grid_size_row,grid_size_col,value,alphabate_space_l_r,alphabate_space_u_d)
+        pdf_make(pdf,word_font_size,word_up_down,word_left_right,word_l_r_s,word_u_d_s,final_word,puzzle,grid_size_row,grid_size_col,value,alphabate_space_l_r,alphabate_space_u_d,alphabate_up_down,alphabate_left_right)
         pdf.showPage()
         pdf.save()
         delete_all(rand)    
