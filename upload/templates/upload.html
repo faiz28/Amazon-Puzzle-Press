@@ -52,7 +52,9 @@
         <hr>
         <div class="row">
             <!-- topic -->
-
+            <div>
+                {% for i in error %} <a style="color:red";>{{i}} </a> {%endfor%}
+            </div>
             <!-- topic -->
             <div class="col-lg-6 col-md-6 col-sm-12 mb-12">
                 <div class="card match-height">
@@ -63,6 +65,8 @@
             </div>
 
             {% comment %} from create {% endcomment %}
+
+            
 
 
             <div class="col-lg-6 col-md-6 col-sm-12 mb-12">
@@ -130,4 +134,4 @@
 <!-- /topics -->
 
 
-{% for i in error %} {{i}} {%endfor%} {% endblock %}
+ {% endblock %}

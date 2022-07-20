@@ -75,14 +75,14 @@ def make_file(str_p ,min_char,max_char,start_page,end_page,Num_of_word,Num_of_fi
                                         f = open('./media/file/file'+str(pdf_num)+'.txt', 'a')
 
 
-
+    print("val ",len(value))
     if pdf_num<Num_of_file: 
         pdf_num -=1
         f.close()
         f = open('./media/file/file'+str(pdf_num)+'.txt', 'a')
 
     cnt = 0 
-    while(pdf_num<=Num_of_file):
+    while(pdf_num<Num_of_file and len(value)>0):
         ran = random.randint(1,len(value)-1)
         f.write(value[ran])
         f.write('\n')
@@ -98,6 +98,7 @@ def make_file(str_p ,min_char,max_char,start_page,end_page,Num_of_word,Num_of_fi
 
     pdfFileObj.close()
     
+    return len(value)
 
 
 # Create your views here.
@@ -152,8 +153,12 @@ def upload(request):
                 end_page = pages
             
             pdfFileObj = open(str_p,'rb')
-            make_file(str_p ,min_char,max_char,start_page,end_page,Num_of_word,Num_of_file)
-            return render(request, 'upload.html', {'form':form,'pdf_file':pdf_file})
+            total = make_file(str_p ,min_char,max_char,start_page,end_page,Num_of_word,Num_of_file)
+            error = []
+            if total == 0:
+                print("in error")
+                error.append("No file generate please upload another file")
+            return render(request, 'upload.html', {'form':form,'pdf_file':pdf_file,'error':error})
     else:
         
         pdf_file = Up_file.objects.last()

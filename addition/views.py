@@ -112,7 +112,6 @@ def inner_design(request):
     
     
     info = inner_page.objects.all().first()
-    print(info)
     # print(info.header_fonts)
     # print("hello ",info['header_fonts'])
     # header section

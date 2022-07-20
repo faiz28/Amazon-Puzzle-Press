@@ -43,16 +43,71 @@
                          
                             <br>
 
-                            <div id="newElementId"></div>
 
+                                <div class="row">
+                                    <div class="col-md-6"  >
+                                        {% comment %} <span class="input-group-text text-white bg-dark" id="basic-addon2">Word Section</span> {% endcomment %}
+                                        {% comment %} <br> {% endcomment %}
 
+                                        <div class="input-group mb-3">
+                                            <select class="form-select " aria-label="Default select example" name = "problem_per_page">
+                                                <option selected value = "0">problem per page</option>
+                                                <option value="1">1</option>
+                                                <option value="2">2</option>
+                                                <option value="4">4</option>                               
+                                            </select>
+                                        </div>
 
-                            <br>
-                            <div class="row">
-                                <div class="col-md-12 text-center" id="dynamicCheck">
-                                    <input type="button" class="btn btn-outline-primary" value="Create Worksheet" onclick="createNewElement();" />
-                                </div>
+                                        <div class="input-group mb-3">
+                                            <input type="number" class="form-control" placeholder="{{info.numbering_font_size}}" aria-label="Recipient's username" aria-describedby="basic-addon2" value='100' name="number_puzzle" >
+                                            <div class="input-group-append">
+                                            <span class="input-group-text" id="basic-addon2" >Number of puzzle</span>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="col-md-6"  >
+                                        {% comment %} Word Section {% endcomment %}
+                                        <span class="input-group-text text-white bg-dark" id="basic-addon2">One Side</span>
+                                        <br>
+                                        <div class="input-group mb-3">
+                                            <div class="form-check form-switch">
+                                                <label class="container">
+                                                    <input type="radio" value="1" name="one_side">
+                                                    <span class="checkmark">Yes</span>
+                                                  </label>
+                                                  <label class="container">
+                                                    <input type="radio"  value="0" name="one_side">
+                                                    <span class="checkmark">No</span>
+                                                  </label>
+                                            </div> 
+                                           
+                                        </div>
+                                        <span class="input-group-text text-white bg-dark" id="basic-addon2">Show Answer</span>
+                                        <br>
+                                        <div class="input-group mb-3">
+                                            <div class="form-check form-switch">
+                                                <label class="container">
+                                                    <input type="radio" value="1" name="answer_show">
+                                                    <span class="checkmark">Yes</span>
+                                                  </label>
+                                                  <label class="container">
+                                                    <input type="radio"  value="0" name="answer_show">
+                                                    <span class="checkmark">No</span>
+                                                  </label>
+                                            </div> 
+                                           
+                                        </div>
+                                    </div>
+                                    
+                                </div>                                
                             </div>
+
+
+
+
+
                             
                             <br>
                             <div class="row">
@@ -64,62 +119,7 @@
 
                     </div>
                     </form>
-                    <script>
-                        var count = 0;
-
-                        function createNewElement() {
-                            // First create a DIV element.
-                            count += 1
-                            var txtNewInputBox = document.createElement('div');
-
-                            let newHtml = ''
-                            newHtml += "<h1 style='text-align: center;'>Math worksheet : " + count + "</h1>";
-                            newHtml += "<hr>";
-                            newHtml += "<h5> Digit Limit:</h5>";
-                            newHtml += "<div class='row'>"
-                            newHtml += "<div class='col-md-6 ''>"
-                            newHtml += " Min length : <input type='number' name='min" + count + "'value = '0' required>";
-                            newHtml += "</div>"
-                            newHtml += "<div class='col-md-6 ''>"
-                            newHtml += " Maximum : <input type='number' name='max" + count + "' value='12' required>";
-                            newHtml += "</div>"
-                            newHtml += "</div>"
-                            newHtml += "<br>";
-                            newHtml += "<br";
-                            newHtml += "<div class='row'>";
-                            newHtml += "<div class='col-md-6 '>"
-                            newHtml += "<h5> Number of Page:</h5>"
-                            newHtml += " <input type='number' name='page" + count + "' value='12' required>"
-                            newHtml += "</div>"
-                            newHtml += "<div class='col-md-6 ''>"
-                            newHtml += "<h5> Select option:</h5>"
-                            newHtml += " <select class='form-select' aria-label='Default select example' name = 'operation" + count + "' >"
-                            newHtml += " <option selected value = 'addition'>Addition</option>"
-                            newHtml += " <option value='subtraction'>Subtraction</option>"
-                            newHtml += " <option value='multiplication'>Multiplication</option>"
-                            newHtml += " <option value='division'>Division</option>"
-                            newHtml += " <option value='add_sub'>Addition and Subtraction Mixed</option>"
-                            newHtml += " <option value='mul_div'>Multiplication and divisition Mixed</option>"
-                            newHtml += " <option value='all_mixed'>All Mixed</option>"
-                            newHtml += " </select>"
-                            newHtml += "</div>"
-                            newHtml += "</div>"
-                            newHtml += "<br>"
-                            newHtml += "<br>"
-                            newHtml += "<hr style = 'margin-top:10px; border: 5px solid green;'>"
-                            newHtml += "<input type='hidden' name='total_value' value='" + count + "' required>"
-
-
-
-                            // Then add the content (a new input box) of the element.
-                            txtNewInputBox.innerHTML = newHtml;
-
-
-                            // Finally put it where it is supposed to appear.
-                            document.getElementById("newElementId").appendChild(txtNewInputBox);
-                        }
-                    </script>
-
+                    
 
                     <br>
                     <br>

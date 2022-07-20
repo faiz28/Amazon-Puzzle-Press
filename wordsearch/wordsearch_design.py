@@ -5,6 +5,8 @@ from reportlab.lib.units import inch
 import random
 import string
 import os
+from wordsearch.models import wordsearch_inner_page
+from reportlab.lib.colors import PCMYKColor, PCMYKColorSep, Color, black, blue, red,white,HexColor
 
 
 file_source = './media/file'
@@ -44,12 +46,12 @@ def print_puzzle(puzzle,grid_size_row,grid_size_col):
         cnt=0
         for i in range(grid_size_row):
             for j in range(grid_size_col):
-                print(puzzle[i][j],end = ' ')
+                # print(puzzle[i][j],end = ' ')
                 if (puzzle[i][j]!='#'):
                     cnt+=1
-            print()
+            # print()
 
-        print(cnt)
+        # print(cnt)
 
 # Create your views here.
 def select_pos(x,y,word,grid_size_row,grid_size_col,puzzle):
@@ -104,25 +106,37 @@ def select_pos(x,y,word,grid_size_row,grid_size_col,puzzle):
             return True,x,y,new_x,new_y
     return False,x,y,new_x,new_y
 
-def pdf_make(c,word_font_size,word_up_down,word_left_right,word_l_r_s,word_u_d_s,final_word,puzzle,grid_size_row,grid_size_col,cnt,alphabate_space_l_r,alphabate_space_u_d,alphabate_up_down,alphabate_left_right):
-    # for wordsearch puzzle
-    
-    print("alphabate_space_l_r = ",alphabate_space_l_r)
+def pdf_make(c,yy,word_font_size,word_up_down,word_left_right,word_l_r_s,word_u_d_s,final_word,puzzle,grid_size_row,grid_size_col,cnt,alphabate_font_size,alphabate_space_l_r,alphabate_space_u_d,alphabate_up_down,alphabate_left_right,rectangle_left_right,rectangle_up_down,rectangle_left_right_inc,rectangle_up_down_inc,numbering_font_size,numbering_left_right,numbering_up_down,number_show,problem_per_page,line_left_right,line_up_down,text_left_right,text_up_down,puzzle_up_down):    
     c.setPageSize((8.5 * inch, 11 * inch)) 
+    c.setFont("Times-Roman", alphabate_font_size+numbering_font_size)
 
-    c.setFont("Times-Roman", 23) 
-
-    x="Puzzle # "+str(cnt)
-    c.drawString(3.6*inch, 10*inch, x)
+    # yy=-4 #downward 
+    
+    cnt=1
+    strr="Puzzle #"+str(cnt)
+    l = len(str(cnt))
+    if number_show==2:
+        c.line((numbering_left_right-0.1)*inch, (numbering_up_down-0.08+line_up_down+yy)*inch, (numbering_left_right+1.44+len(str(cnt))*0.2+line_left_right)*inch, (numbering_up_down-0.08+line_up_down+yy)*inch)
+    if number_show==3:
+        c.roundRect((numbering_left_right-0.2)*inch,(numbering_up_down-0.15+yy)*inch,(1.8+len(str(cnt))*0.2+line_left_right)*inch,(0.5+line_up_down)*inch, 6, stroke=1, fill=0)  
+        # pdf.roundRect((x-rem_x+rem_x/2 -0.3 +r_l_r)*inch,(y-0.67+r_u_d)*inch,(rem_x/2 +0.4+l_r_i)*inch,(0.87+u_d_i)*inch,.1*inch, fill=False, stroke=True)
+    if number_show==4:
+        c.roundRect((numbering_left_right-0.2)*inch,(numbering_up_down-0.15+yy)*inch,(1.8+len(str(cnt))*0.2+line_left_right)*inch,(0.5+line_up_down)*inch, 6, stroke=0, fill=1)
+        c.setFillColor('white')
+    # print("t l r -->>> ",numbering_left_right+text_left_right)
+    # print("t u d -->>> ",text_up_down)
+    c.drawString((numbering_left_right+text_left_right)*inch, (numbering_up_down+text_up_down+yy)*inch, strr)
     # c_sol.drawString(1.3*inch, 9*inch, x)
+    c.setFont("Times-Roman", alphabate_font_size)
+    c.setFillColor('black')
     
     
     x = 4.5 -((grid_size_col*0.42)/2)
-    y=9.4
+    y=9.4+yy
     inc=0
-    c.roundRect((x-0.25)*inch,(y-(grid_size_row*0.42)+0.4)*inch,(grid_size_col*alphabate_space_l_r*1.1)*inch,(grid_size_row*0.42)*inch, 1, stroke=1, fill=0)
+    c.roundRect((x-0.25+rectangle_left_right)*inch,(y-(grid_size_row*0.42+rectangle_up_down)+0.4+alphabate_up_down)*inch,(grid_size_col*alphabate_space_l_r*1.1+(rectangle_left_right_inc*0.1))*inch,((grid_size_row*0.42) - (rectangle_up_down_inc*0.1))*inch, 1, stroke=1, fill=0)
     # c_sol.rect(4.3*inch,5.5*inch,3.56*inch,3.56*inch, fill=0)
-    c.setFont("Times-Roman", 20)
+    
     
     
     x+=alphabate_left_right
@@ -140,8 +154,7 @@ def pdf_make(c,word_font_size,word_up_down,word_left_right,word_l_r_s,word_u_d_s
         y-=alphabate_space_u_d
 
 
-    x= 2
-    y=9.4 - grid_size_row*0.42
+    x= word_left_right
     c.setFont("Helvetica", word_font_size)
     total= len(final_word)
 
@@ -150,34 +163,75 @@ def pdf_make(c,word_font_size,word_up_down,word_left_right,word_l_r_s,word_u_d_s
         length= int(total/3)+1
     else: 
         length = int(total/3)
-    
-    print("Word left right ",word_l_r_s)
+
+    rem_x = x
+    y = word_up_down+yy
     for i in range(length):
         for j in range(3):
+            # print("hello")
             if inc>=total:
                 break
-            if j==0:
+            if( y<0.7):
+                break
+            if x+len(str(final_word[inc].strip()))*0.12<7.7:
                 c.drawString(x*inch,y*inch, str(final_word[inc].strip()))
                 inc+=1
-            if j==1:
-                c.drawString((x+word_l_r_s)*inch,y*inch, str(final_word[inc].strip()))
+                x+=word_l_r_s
+            else:
+                x = rem_x
+                y-=word_u_d_s+0.5
+                # print("Y ",y)
+                c.drawString(x*inch,y*inch, str(final_word[inc].strip()))
                 inc+=1
-            if j==2:
-                c.drawString((x+(word_l_r_s*2))*inch,y*inch, str(final_word[inc].strip()))
-                inc+=1
-        y-=word_u_d_s
+                x+=word_l_r_s
+                    
+        
 
 def delete_all(check):
     xx = os.listdir('./media/wordsearch/')
     for path in xx:
-        print(path)
         if path!=str("%d_inner_design.pdf"%check) and ("inner_design" in path):
-            print(path)
             os.remove("./media/wordsearch/"+path)
-            
-    
+   
+def update_info(info,grid_size_row,grid_size_col,word_font_size,word_left_right,word_up_down,word_u_d_s,word_l_r_s,rectangle_left_right,rectangle_up_down,rectangle_left_right_inc,rectangle_up_down_inc,alphabate_font_size,alphabate_left_right,alphabate_up_down,alphabate_space_l_r,alphabate_space_u_d,numbering_font_size,numbering_left_right,numbering_up_down,number_show,problem_per_page,line_left_right,line_up_down,text_left_right,text_up_down,puzzle_up_down):
+    info.row = grid_size_row
+    info.column = grid_size_col
+    info.word_font_size = word_font_size
+    info.word_left_right = word_left_right
+    info.word_up_down = word_up_down
+    info.word_up_down_space = word_u_d_s
+    info.word_left_right_space = word_l_r_s
+    info.rectangle_l_r = rectangle_left_right
+    info.rectangle_u_d = rectangle_up_down
+    info.rectangle_l_r_i = rectangle_left_right_inc
+    info.rectangle_u_d_i = rectangle_up_down_inc
+    info.alphabate_font_size = alphabate_font_size
+    info.alphabate_left_right = alphabate_left_right
+    info.alphabate_up_down = alphabate_up_down
+    info.alphabate_left_right_space = alphabate_space_l_r
+    info.alphabate_up_down_space = alphabate_space_u_d
+    # numbering section
+    info.numbering_left_right = numbering_left_right
+    info.numbering_up_down = numbering_up_down
+    info.number_show = number_show
+    info.problem_per_page = problem_per_page
+    info.line_left_right = line_left_right
+    info.line_up_down = line_up_down
+    info.text_left_right = text_left_right
+    info.text_up_down = text_up_down
+    info.numbering_font_size = numbering_font_size
+    info.puzzle_up_down = puzzle_up_down
+    info.save()
+
+    return True
+
+def create():
+    info = wordsearch_inner_page.objects.create(problem_per_page=1)
+    info.save()
+    info = wordsearch_inner_page.objects.all().filter(problem_per_page=1).first()        
+    return info
 class design:
-    def make_pdf(font,word_font_size,word_left_right,word_up_down,word_u_d_s,word_l_r_s,alphabate_font_size,alphabate_space_l_r,alphabate_space_u_d,alphabate_up_down,alphabate_left_right,row, col):
+    def make_pdf(font,word_font_size,word_left_right,word_up_down,word_u_d_s,word_l_r_s,alphabate_font_size,alphabate_space_l_r,alphabate_space_u_d,alphabate_up_down,alphabate_left_right,row, col,rectangle_left_right,rectangle_up_down,rectangle_left_right_inc,rectangle_up_down_inc,numbering_font_size,numbering_left_right,numbering_up_down,number_show,problem_per_page,line_left_right,line_up_down,text_left_right,text_up_down,puzzle_up_down):
         rand = random.randint(100000,10000000)
         pdf  =  canvas.Canvas("./media/wordsearch/%d_inner_design.pdf"%rand)
         pdf.setPageSize((8.5 * inch, 11 * inch))
@@ -192,63 +246,59 @@ class design:
             if x!=None:
                 word_list.append(x)
         
-        print("row -> ",row)
-        if row:
-            grid_size_row = int(row)
-        else: 
-            grid_size_row = 10
-        if col:
-            grid_size_col  = int(col)
-        else:
-            grid_size_col = 10
+        # wordsearch take save data
+        info = wordsearch_inner_page.objects.all().filter(problem_per_page=1).first()
+        if info==None:
+            info = create()
             
+            # print("info not none")
             
-        # word positioning
-        if word_font_size:
-            word_font_size = 16+int(word_font_size)*0.1
-        else:
-            word_font_size = 16
-        if word_up_down:
-            word_up_down = int(word_up_down)*0.1
-        else:
-            word_up_down = 0
-        if word_left_right:
-            word_left_right = int(word_left_right)*0.1
-        else:
-            word_left_right = 0
-        if word_u_d_s:
-            word_u_d_s = 1.5+int(word_u_d_s)*0.1
-        else:
-            word_u_d_s = 1.5
-        if word_l_r_s:
-            word_l_r_s = 0.2+int(word_l_r_s)*0.1
-        else:
-            word_l_r_s = 0.2
+        # for xx in info:
+        #     print(xx.problem_per_page)
+        # print('INfo per page    ',info.problem_per_page)
+
+        grid_size_row = int(row) if row else info.row
+        grid_size_col = int(col) if col else info.column
+        word_font_size = info.word_font_size+int(word_font_size)*0.1 if word_font_size else info.word_font_size
+        word_left_right = info.word_left_right+int(word_left_right)*0.1 if word_left_right else info.word_left_right
+        word_up_down = info.word_up_down+int(word_up_down)*0.05 if word_up_down else info.word_up_down
+        word_u_d_s = info.word_up_down_space+int(word_u_d_s)*0.05 if word_u_d_s else info.word_up_down_space
+        word_l_r_s = info.word_left_right_space+int(word_l_r_s)*0.05 if word_l_r_s else info.word_left_right_space
+        
+        # alphabate section
+        alphabate_font_size = info.alphabate_font_size+int(alphabate_font_size)*0.07 if alphabate_font_size else info.alphabate_font_size
+        alphabate_left_right = info.alphabate_left_right+int(alphabate_left_right)*0.05 if alphabate_left_right else info.alphabate_left_right   
+        alphabate_up_down = info.alphabate_up_down+int(alphabate_up_down)*0.05 if alphabate_up_down else info.alphabate_up_down
+        alphabate_space_l_r = info.alphabate_left_right_space+int(alphabate_space_l_r)*0.05 if alphabate_space_l_r else info.alphabate_left_right_space
+        alphabate_space_u_d = info.alphabate_up_down_space+int(alphabate_space_u_d)*0.05 if alphabate_space_u_d else info.alphabate_up_down_space
         
         
             
-        # alphabate
-        if alphabate_space_l_r:
-            alphabate_space_l_r = int(alphabate_space_l_r)*0.1
-        else: 
-            alphabate_space_l_r = 0.4
-        if alphabate_space_u_d:
-            alphabate_space_u_d = int(alphabate_space_u_d)*0.1
-        else:
-            alphabate_space_u_d = 0.4
-            
-        if alphabate_up_down:
-            alphabate_up_down = int(alphabate_up_down)*0.1
-        else:
-            alphabate_up_down = 0
-        if alphabate_left_right:
-            alphabate_left_right = int(alphabate_left_right)*0.1
-        else:
-            alphabate_left_right = 0
+        # rectangle section
+        rectangle_left_right = info.rectangle_l_r+int(rectangle_left_right)*(0.05) if rectangle_left_right else info.rectangle_l_r
+        rectangle_up_down = info.rectangle_u_d+int(rectangle_up_down)*(-0.05) if rectangle_up_down else info.rectangle_u_d
+        rectangle_left_right_inc = info.rectangle_l_r_i + int(rectangle_left_right_inc)*(0.05) if rectangle_left_right_inc else info.rectangle_l_r_i
+        rectangle_up_down_inc = info.rectangle_u_d_i + int(rectangle_up_down_inc)*(-0.05) if rectangle_up_down_inc else info.rectangle_u_d_i
+        
+        #numbering section
         
             
+        numbering_font_size = info.numbering_font_size+int(numbering_font_size)*0.5 if numbering_font_size else info.numbering_font_size    
+        numbering_left_right = info.numbering_left_right+int(numbering_left_right)*0.07 if numbering_left_right else info.numbering_left_right 
+        numbering_up_down = info.numbering_up_down+int(numbering_up_down)*0.07 if numbering_up_down else info.numbering_up_down
+        number_show = int(number_show) if int(number_show)>0 else info.number_show 
+        line_left_right = info.line_left_right+int(line_left_right)*0.1 if line_left_right else info.line_left_right
+        line_up_down = info.line_up_down+int(line_up_down)*0.05 if line_up_down else info.line_up_down
+        text_left_right = info.text_left_right+int(text_left_right)*0.1 if text_left_right else info.text_left_right
+        text_up_down = info.text_up_down+int(text_up_down)*0.008 if text_up_down else info.text_up_down
+             
         
-            
+        puzzle_up_down = info.puzzle_up_down+int(puzzle_up_down)*0.05 if puzzle_up_down else info.puzzle_up_down
+        # problem per page 
+        problem_per_page = int(problem_per_page) if int(problem_per_page)>0 else info.problem_per_page
+        update_info(info,grid_size_row,grid_size_col,word_font_size,word_left_right,word_up_down,word_u_d_s,word_l_r_s,rectangle_left_right,rectangle_up_down,rectangle_left_right_inc,rectangle_up_down_inc,alphabate_font_size,alphabate_left_right,alphabate_up_down,alphabate_space_l_r,alphabate_space_u_d,numbering_font_size,numbering_left_right,numbering_up_down,number_show,problem_per_page,line_left_right,line_up_down,text_left_right,text_up_down,puzzle_up_down)
+             
+        
         s_word = sorted(word_list,key=len)
         rows,cols = grid_size_row+5, grid_size_col+5
         puzzle = [['#' for i in range(cols)] for j in range(rows)] 
@@ -295,12 +345,17 @@ class design:
             
                 if x == True:
                     final_word.append(word_list[i])
-        
-        print_puzzle(puzzle,grid_size_row,grid_size_col)
-        print("total word : ")
-        print(total_word)
+
         value = 1
-        pdf_make(pdf,word_font_size,word_up_down,word_left_right,word_l_r_s,word_u_d_s,final_word,puzzle,grid_size_row,grid_size_col,value,alphabate_space_l_r,alphabate_space_u_d,alphabate_up_down,alphabate_left_right)
+        yy=0
+        # print("puzzle up down ",puzzle_up_down)
+        
+        xx=puzzle_up_down
+        while(problem_per_page):
+            problem_per_page-=1
+            pdf_make(pdf,yy,word_font_size,word_up_down,word_left_right,word_l_r_s,word_u_d_s,final_word,puzzle,grid_size_row,grid_size_col,value,alphabate_font_size,alphabate_space_l_r,alphabate_space_u_d,alphabate_up_down,alphabate_left_right,rectangle_left_right,rectangle_up_down,rectangle_left_right_inc,rectangle_up_down_inc,numbering_font_size,numbering_left_right,numbering_up_down,number_show,problem_per_page,line_left_right,line_up_down,text_left_right,text_up_down,xx)   
+            yy+=puzzle_up_down
+            xx-=puzzle_up_down
         pdf.showPage()
         pdf.save()
         delete_all(rand)    
@@ -312,3 +367,20 @@ class design:
             if "inner_design" in path:
                 file_path = os.path.join('../media/wordsearch/'+path)
         return file_path
+
+    def update_current(problem_per_page):
+        from wordsearch.models import puzzleoption
+        info = puzzleoption.objects.all().first()
+        if info==None:
+            info = puzzleoption.objects.create(choose_option=1)
+            info.save()
+            info = puzzleoption.objects.all().first()
+            
+        if int(problem_per_page)>0:
+                info.choose_option = int(problem_per_page)
+                info.save()
+                return int(problem_per_page)
+        else:
+           return info.choose_option
+       
+    
