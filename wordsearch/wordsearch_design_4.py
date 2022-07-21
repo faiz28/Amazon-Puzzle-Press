@@ -118,10 +118,10 @@ def pdf_make(c,yy,word_font_size,word_up_down,word_left_right,word_l_r_s,word_u_
     if number_show==2:
         c.line((numbering_left_right-0.1)*inch, (numbering_up_down-0.08+line_up_down+yy)*inch, (numbering_left_right+1.44+line_left_right+len(str(step))*0.2)*inch, (numbering_up_down-0.08+line_up_down+yy)*inch)
     if number_show==3:
-        c.roundRect((numbering_left_right-0.2)*inch,(numbering_up_down-0.15+yy)*inch,(1.8+len(str(step))*0.2+line_left_right)*inch,(0.5+line_up_down)*inch, 6, stroke=1, fill=0)  
+        c.roundRect((numbering_left_right-0.2)*inch,(numbering_up_down-0.15+yy)*inch,(1.8+line_left_right)*inch,(0.5+line_up_down)*inch, 6, stroke=1, fill=0)  
         # pdf.roundRect((x-rem_x+rem_x/2 -0.3 +r_l_r)*inch,(y-0.67+r_u_d)*inch,(rem_x/2 +0.4+l_r_i)*inch,(0.87+u_d_i)*inch,.1*inch, fill=False, stroke=True)
     if number_show==4:
-        c.roundRect((numbering_left_right-0.2)*inch,(numbering_up_down-0.15+yy)*inch,(1.8+len(str(step))*0.2+line_left_right)*inch,(0.5+line_up_down)*inch, 6, stroke=0, fill=1)
+        c.roundRect((numbering_left_right-0.2)*inch,(numbering_up_down-0.15+yy)*inch,(1.8+line_left_right)*inch,(0.5+line_up_down)*inch, 6, stroke=0, fill=1)
         c.setFillColor('white')
     # print("t l r -->>> ",numbering_left_right+text_left_right)
     # print("t u d -->>> ",text_up_down)
@@ -201,13 +201,10 @@ def pdf_make2(c,yy,word_font_size,word_up_down,word_left_right,word_l_r_s,word_u
     l = len(str(step))
     if number_show==2:
         c.line((numbering_left_right-0.1+x_val_update)*inch, (numbering_up_down-0.08+line_up_down+yy)*inch, (numbering_left_right+1.44+line_left_right+x_val_update+len(str(step))*0.2)*inch, (numbering_up_down-0.08+line_up_down+yy)*inch)
-        # c.line((numbering_left_right-0.1+x_val_update)*inch, (numbering_up_down-0.08+line_up_down+yy)*inch, (numbering_left_right+1.44+line_left_right+x_val_update)*inch, (numbering_up_down-0.08+line_up_down+yy)*inch)
-        # c.line((numbering_left_right-0.1+line_left_right+x_val_update)*inch, (numbering_up_down-0.08+line_up_down+yy)*inch, (numbering_left_right+1.44+len(str(step))*0.2+line_left_right+x_val_update)*inch, (numbering_up_down-0.08+line_up_down+yy)*inch)
     if number_show==3:
-        c.roundRect((numbering_left_right-0.2+x_val_update)*inch,(numbering_up_down-0.15+yy)*inch,(1.8+len(str(step))*0.2+line_left_right)*inch,(0.5+line_up_down)*inch, 6, stroke=1, fill=0)  
-        # pdf.roundRect((x-rem_x+rem_x/2 -0.3 +r_l_r)*inch,(y-0.67+r_u_d)*inch,(rem_x/2 +0.4+l_r_i)*inch,(0.87+u_d_i)*inch,.1*inch, fill=False, stroke=True)
+        c.roundRect((numbering_left_right-0.2+x_val_update)*inch,(numbering_up_down-0.15+yy)*inch,(1.8+line_left_right)*inch,(0.5+line_up_down)*inch, 6, stroke=1, fill=0)  
     if number_show==4:
-        c.roundRect((numbering_left_right-0.2+x_val_update)*inch,(numbering_up_down-0.15+yy)*inch,(1.8+len(str(step))*0.2+line_left_right)*inch,(0.5+line_up_down)*inch, 6, stroke=0, fill=1)
+        c.roundRect((numbering_left_right-0.2+x_val_update)*inch,(numbering_up_down-0.15+yy)*inch,(1.8+line_left_right)*inch,(0.5+line_up_down)*inch, 6, stroke=0, fill=1)
         c.setFillColor('white')
     # print("t l r -->>> ",numbering_left_right+text_left_right)
     # print("t u d -->>> ",text_up_down)
@@ -277,11 +274,11 @@ def pdf_make2(c,yy,word_font_size,word_up_down,word_left_right,word_l_r_s,word_u
                 x+=word_l_r_s
                  
 
-def delete_all(check):
-    xx = os.listdir('./media/wordsearch/')
+def delete_all(old_path,check):
+    xx = os.listdir(old_path)
     for path in xx:
         if path!=str("%d_inner_design.pdf"%check) and ("inner_design" in path):
-            os.remove("./media/wordsearch/"+path)
+            os.remove(old_path+path)
    
 def update_info(info,grid_size_row,grid_size_col,word_font_size,word_left_right,word_up_down,word_u_d_s,word_l_r_s,rectangle_left_right,rectangle_up_down,rectangle_left_right_inc,rectangle_up_down_inc,alphabate_font_size,alphabate_left_right,alphabate_up_down,alphabate_space_l_r,alphabate_space_u_d,numbering_font_size,numbering_left_right,numbering_up_down,number_show,problem_per_page,line_left_right,line_up_down,text_left_right,text_up_down,puzzle_up_down,right_puzzle):
     info.row = grid_size_row
@@ -373,9 +370,9 @@ def puzzle_possition_set(word_list,grid_size_row,grid_size_col):
 
 
 class design4:
-    def make_pdf(font,word_font_size,word_left_right,word_up_down,word_u_d_s,word_l_r_s,alphabate_font_size,alphabate_space_l_r,alphabate_space_u_d,alphabate_up_down,alphabate_left_right,row, col,rectangle_left_right,rectangle_up_down,rectangle_left_right_inc,rectangle_up_down_inc,numbering_font_size,numbering_left_right,numbering_up_down,number_show,problem_per_page,line_left_right,line_up_down,text_left_right,text_up_down,puzzle_up_down,right_puzzle,total_problem,test):
-        rand = random.randint(100000,10000000)
-        pdf  =  canvas.Canvas("./media/wordsearch/%d_inner_design.pdf"%rand)
+    def make_pdf(pdf,rand,font,word_font_size,word_left_right,word_up_down,word_u_d_s,word_l_r_s,alphabate_font_size,alphabate_space_l_r,alphabate_space_u_d,alphabate_up_down,alphabate_left_right,row, col,rectangle_left_right,rectangle_up_down,rectangle_left_right_inc,rectangle_up_down_inc,numbering_font_size,numbering_left_right,numbering_up_down,number_show,problem_per_page,line_left_right,line_up_down,text_left_right,text_up_down,puzzle_up_down,right_puzzle,total_problem,test):
+        # rand = random.randint(100000,10000000)
+        # pdf  =  canvas.Canvas("./media/wordsearch/%d_inner_design.pdf"%rand)
         pdf.setPageSize((8.5 * inch, 11 * inch))
         path = './media/file'
         onlyfiles = [f for f in listdir(path) if isfile(join(path, f))]
@@ -473,7 +470,12 @@ class design4:
         
         
         pdf.save()
-        delete_all(rand)    
+        if test:
+            path ="./media/wordsearch/"
+            delete_all(path,rand)  
+        else:
+            path ="./media/wordsearch/solution/"
+            delete_all(path,rand)  
             
     def check_path_inner_design():
         paths = os.listdir('./media/wordsearch/')

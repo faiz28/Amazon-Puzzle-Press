@@ -64,7 +64,7 @@ class Solution:
                 y=y-0.3
                 cnt=1
                 for k in j:
-                    pdf.drawString((x)*inch,(y)*inch,str(cnt)+")"+str(k))
+                    pdf.drawString((x)*inch,(y)*inch,str(cnt)+")"+str(int(k)))
                     x+=1
                     cnt+=1
                     if x>=7.5:
