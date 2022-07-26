@@ -7,7 +7,7 @@ import string
 import os
 from wordsearch.models import wordsearch_inner_page
 from reportlab.lib.colors import PCMYKColor, PCMYKColorSep, Color, black, blue, red,white,HexColor
-from wordsearch.solution_pdf import solution_design
+from wordsearch.solution_pdf import *
 from wordsearch.puzzle_make import *
 
 file_source = './media/file'
@@ -62,8 +62,11 @@ def pdf_make(c,yy,word_font_size,word_up_down,word_left_right,word_l_r_s,word_u_
     
     x+=alphabate_left_right
     y+=alphabate_up_down
+    # print(len(puzzle))
+    # print(len(puzzle[0]))
     for i in range(grid_size_row):
         for j in range(grid_size_col):
+            # print(i,j)
             c.drawString(x*inch,y*inch,puzzle[i][j])            
             x+=alphabate_space_l_r
         x=4.5 -((grid_size_col*0.42)/2)+alphabate_left_right
@@ -83,6 +86,8 @@ def pdf_make(c,yy,word_font_size,word_up_down,word_left_right,word_l_r_s,word_u_
     rem_x = x
     y = word_up_down+yy
     rem_y = y
+    # print(total,length)
+    inc  =0
     for i in range(length):
         for j in range(3):
             if inc>=total:
@@ -90,14 +95,14 @@ def pdf_make(c,yy,word_font_size,word_up_down,word_left_right,word_l_r_s,word_u_
             if((y-0.5<(rem_y-abs(puzzle_up_down)) and yy==0 )or y<0.7):
                 break
             if x+len(str(final_word[inc].strip()))*0.12<7.7:
-                c.drawString(x*inch,y*inch, str(final_word[inc].strip()))
+                c.drawString(x*inch,y*inch, str(final_word[inc]))
                 inc+=1
                 x+=word_l_r_s
             else:
                 x = rem_x
                 y-=word_u_d_s+0.5
                 # print("Y ",y)
-                c.drawString(x*inch,y*inch, str(final_word[inc].strip()))
+                c.drawString(x*inch,y*inch, str(final_word[inc]))
                 inc+=1
                 x+=word_l_r_s
 
@@ -153,10 +158,17 @@ def create_per_1():
     return info
 
 # puzzle solution
-
+def update_puzzle(puzzle,rows,cols):
+    for i in range(rows):
+        for j in range(cols):
+            if puzzle[i][j]=='#':
+                puzzle[i][j]=random.choice(string.ascii_letters).upper()
+            else:
+                puzzle[i][j]=puzzle[i][j].upper()
+    return puzzle
     
 class design2:
-    def make_pdf(pdf,rand,solutioin_pdf,font,word_font_size,word_left_right,word_up_down,word_u_d_s,word_l_r_s,alphabate_font_size,alphabate_space_l_r,alphabate_space_u_d,alphabate_up_down,alphabate_left_right,row, col,rectangle_left_right,rectangle_up_down,rectangle_left_right_inc,rectangle_up_down_inc,numbering_font_size,numbering_left_right,numbering_up_down,number_show,problem_per_page,line_left_right,line_up_down,text_left_right,text_up_down,puzzle_up_down,total_problem,test):
+    def make_pdf(pdf,rand,solution_pdf,font,word_font_size,word_left_right,word_up_down,word_u_d_s,word_l_r_s,alphabate_font_size,alphabate_space_l_r,alphabate_space_u_d,alphabate_up_down,alphabate_left_right,row, col,rectangle_left_right,rectangle_up_down,rectangle_left_right_inc,rectangle_up_down_inc,numbering_font_size,numbering_left_right,numbering_up_down,number_show,problem_per_page,line_left_right,line_up_down,text_left_right,text_up_down,puzzle_up_down,total_problem,test):
         
         pdf.setPageSize((8.5 * inch, 11 * inch))
         path = './media/file'
@@ -199,7 +211,7 @@ class design2:
         rectangle_left_right_inc = info.rectangle_l_r_i + int(rectangle_left_right_inc)*(0.1) if rectangle_left_right_inc else info.rectangle_l_r_i
         rectangle_up_down_inc = info.rectangle_u_d_i + int(rectangle_up_down_inc)*(-0.1) if rectangle_up_down_inc else info.rectangle_u_d_i
         
-        print("r_ u_d ",rectangle_up_down_inc)
+        # print("r_ u_d ",rectangle_up_down_inc)
         #numbering section
         
         numbering_font_size = info.numbering_font_size+int(numbering_font_size)*0.5 if numbering_font_size else info.numbering_font_size    
@@ -223,6 +235,18 @@ class design2:
         puzzle_Arr=[]
         final_word_Arr = []
         store_all_info = []
+        page_cnt=0
+        # for solution in solution_list:
+        r = (0.2*grid_size_row)+0.5
+        c = (0.2* grid_size_col)+0.35
+        sol_x = 1.3
+        sol_y = 9.8
+        x_axis = int(7.5/c)
+        y_axis = int(9.8/r)
+        sol_one_side = 0
+        # for solution in solution_list:
+        
+        
         for file in onlyfiles:
             file_path = path+"/"+file;
             f = open(file_path, "r")
@@ -235,13 +259,34 @@ class design2:
                     word_list.append(x.strip())
             f.close()
             # print(len(word_list))
-            final_word,puzzle,store_all = wordsearch_puzzle.puzzle_possition_set(word_list,grid_size_row,grid_size_col)
-            final_word_Arr.append(final_word)
-            puzzle_Arr.append(puzzle)
-            store_all_info.append(store_all)
+            pzl = [['#' for i in range(grid_size_col +2)] for j in range(grid_size_row+2)] 
+            f_w = []
+            a_i = []
+            three_time =3
+            mx_total=0
+            
+            while three_time>=0:
+                three_time -= 1    
+                puzzle = [['#' for i in range(grid_size_col +2)] for j in range(grid_size_row+2)] 
+                total,final_word,puzzle,all_info= Solution.create_puzzle(word_list,puzzle,grid_size_row,grid_size_col)  
+                if mx_total<total:
+                    mx_total=total
+                    f_w = final_word
+                    a_i = all_info
+                    pzl = puzzle
+            # print(all_info)
+            if mx_total ==0:
+                continue
+            # final_word,puzzle,store_all = wordsearch_puzzle.puzzle_possition_set(word_list,grid_size_row,grid_size_col)
+            final_word_Arr.append(f_w)
+            pzl = update_puzzle(pzl,grid_size_row,grid_size_col)
+            puzzle_Arr.append(pzl)
+            store_all_info.append(a_i)
             pro_cnt+=1
             # make pdff
             if pro_cnt%problem_per_page==0:
+                print("in")
+                page_cnt+=1
                 step = pro_cnt-problem_per_page
                 value = 1
                 yy=0
@@ -249,6 +294,7 @@ class design2:
                 tt=problem_per_page
                 while(tt):
                     tt-=1
+                    # print(final_word_Arr[step])
                     pdf_make(pdf,yy,word_font_size,word_up_down,word_left_right,word_l_r_s,word_u_d_s,final_word_Arr[step],puzzle_Arr[step],grid_size_row,grid_size_col,value,alphabate_font_size,alphabate_space_l_r,alphabate_space_u_d,alphabate_up_down,alphabate_left_right,rectangle_left_right,rectangle_up_down,rectangle_left_right_inc,rectangle_up_down_inc,numbering_font_size,numbering_left_right,numbering_up_down,number_show,problem_per_page,line_left_right,line_up_down,text_left_right,text_up_down,xx,step+1)   
                     yy+=puzzle_up_down
                     # print(puzzle_Arr[step])
@@ -256,19 +302,94 @@ class design2:
                     step+=1
                 pdf.showPage()
             # print solution
-            if test==0 and pro_cnt%9==0:
-                solutioin_pdf.setPageSize((8.5 * inch, 11 * inch))
-                step = pro_cnt-9
-                # print(step)
-                print(store_all_info[step])
-                tt = 9
-                while(tt):
-                    tt-=1
-                    solution_design.solution_func(solutioin_pdf,final_word_Arr[step],puzzle_Arr[step],store_all_info[step],grid_size_row,grid_size_col)
-                    step+=1
+            tt  = x_axis * y_axis
+            if test==0 and pro_cnt%tt==0 and test==0:
+                solution_pdf.setPageSize((8.5 * inch, 11 * inch))
+                step = pro_cnt-tt
+                y_down = abs(9.8 - y_axis*r)/2 
+                every_x = abs(8.2 - x_axis*c)/2 - 0.5
+                rem_x = sol_x+every_x
+                rem_y = y_axis
+                y = sol_y - y_down
+                if sol_one_side%2:
+                    rem_x -=0.7
+
+                while(rem_y):
+                    rem_y-=1
+                    x=rem_x
+                        
+                    zz = x_axis
+                    while (zz):
+                        zz-=1
+                        tt-=1
+                        solution_design.solution_func(solution_pdf,final_word_Arr[step],puzzle_Arr[step],store_all_info[step],grid_size_row,grid_size_col,x,y,step,c)
+                        x = x+c
+                        step+=1
+                        # if(step>=pro_cnt-1):
+                        #     break
+                    x = rem_x
+                    y= y-r
+                solution_pdf.showPage()
+                sol_one_side+=1
+                    # step+=1
                 
-                solutioin_pdf.showPage()
+                # solution_pdf.showPage()
             
+        
+        # extra pdf page
+        # print("pro_cnt ",pro_cnt%problem_per_page)
+        if pro_cnt%problem_per_page:
+            page_cnt+=1
+            step = pro_cnt-(pro_cnt%problem_per_page)
+            # print("step ",step)
+            value = 1
+            yy=0
+            xx=puzzle_up_down
+            tt=pro_cnt%problem_per_page
+            while(tt):
+                tt-=1
+                # print(final_word_Arr[step])
+                pdf_make(pdf,yy,word_font_size,word_up_down,word_left_right,word_l_r_s,word_u_d_s,final_word_Arr[step],puzzle_Arr[step],grid_size_row,grid_size_col,value,alphabate_font_size,alphabate_space_l_r,alphabate_space_u_d,alphabate_up_down,alphabate_left_right,rectangle_left_right,rectangle_up_down,rectangle_left_right_inc,rectangle_up_down_inc,numbering_font_size,numbering_left_right,numbering_up_down,number_show,problem_per_page,line_left_right,line_up_down,text_left_right,text_up_down,xx,step+1)   
+                yy+=puzzle_up_down
+                # print(puzzle_Arr[step])
+                xx-=puzzle_up_down
+                step+=1
+            pdf.showPage()
+        
+        # if odd page add extra page
+        print("page cnt ",page_cnt)
+        if page_cnt%2:
+            pdf.showPage()
+        
+        # extra pdf solution page  
+        tt =  x_axis * y_axis
+        extra = pro_cnt%tt
+        if(pro_cnt%tt  and test==0):
+            solution_pdf.setPageSize((8.5 * inch, 11 * inch))
+            step = pro_cnt - pro_cnt%tt
+            y_down = abs(9.8 - y_axis*r)/2 
+            every_x = abs(8.2 - x_axis*c)/2 - 0.5
+            rem_x = sol_x+every_x
+            rem_y = int(extra/y_axis) +1
+            y = sol_y 
+            if sol_one_side%2:
+                    rem_x -=0.7
+                    # print(rem_y)
+            while(step<pro_cnt):
+                rem_y-=1
+                x= rem_x
+                zz = x_axis
+                while (zz):
+                    zz-=1
+                    tt-=1
+                    solution_design.solution_func(solution_pdf,final_word_Arr[step],puzzle_Arr[step],store_all_info[step],grid_size_row,grid_size_col,x,y,step,c)
+                    x = x+c
+                    step+=1
+                    if(step>=pro_cnt-1):
+                        break
+                x = rem_x
+                y= y-r
+            solution_pdf.showPage()
                 
                 
         
@@ -282,7 +403,7 @@ class design2:
         else:
             path ="./media/wordsearch/solution/"
             delete_all(path,rand) 
-            solutioin_pdf.save()
+            solution_pdf.save()
               
             
     def check_path_inner_design():

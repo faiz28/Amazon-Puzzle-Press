@@ -3,7 +3,7 @@ from django.shortcuts import render
 from wordsearch.wordsearch_design import *
 from wordsearch.wordsearch_design_2 import *
 from wordsearch.wordsearch_design_4 import *
-from wordsearch.puzzle_make import *
+from wordsearch.old_puzzle_make import *
 from wordsearch.models import puzzleoption
 import random
 # Create your views here.
