@@ -285,7 +285,7 @@ class design2:
             pro_cnt+=1
             # make pdff
             if pro_cnt%problem_per_page==0:
-                print("in")
+                # print("in")
                 page_cnt+=1
                 step = pro_cnt-problem_per_page
                 value = 1

@@ -303,6 +303,7 @@ class design4:
         puzzle_Arr=[]
         final_word_Arr = []
         store_all_info = []
+        page_cnt=0
         # for solution in solution_list:
         r = (0.2*grid_size_row)+0.5
         c = (0.2* grid_size_col)+0.35
@@ -352,6 +353,7 @@ class design4:
             # make pdff
             if pro_cnt%problem_per_page==0:
                 step = pro_cnt-problem_per_page
+                page_cnt+=1
                 value = 1
                 yy=0
                 xx=puzzle_up_down
@@ -405,6 +407,7 @@ class design4:
         # pdf print  
         if pro_cnt%problem_per_page:
             step = pro_cnt-(pro_cnt%problem_per_page)
+            page_cnt+=1
             # print("step ",step)
             value = 1
             yy=0
@@ -425,7 +428,8 @@ class design4:
                 if(step>=pro_cnt):
                     break
             pdf.showPage()
-            
+        if page_cnt%2:
+            pdf.showPage()
         # pdf solution page
         tt =  x_axis * y_axis
         # print("procnt ",pro_cnt%tt)
