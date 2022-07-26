@@ -25,6 +25,7 @@ def wordsearch(request):
         else:
             design4.make_pdf(pdf,rand,solution,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,problem_per_page,0,0,0,0,0,0,number_puzzle,0)
 
+    
     inner_design = design2.check_solution()
     return render(request,'wordsearch.html',{'inner_design':inner_design})
 

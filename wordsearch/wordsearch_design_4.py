@@ -9,6 +9,7 @@ from wordsearch.models import wordsearch_inner_page
 from reportlab.lib.colors import PCMYKColor, PCMYKColorSep, Color, black, blue, red,white,HexColor
 from wordsearch.solution_pdf import *
 from wordsearch.puzzle_make import *
+from PyPDF2 import PdfFileMerger
 
 file_source = './media/file'
 files = [f for f in listdir(file_source) if isfile(join(file_source, f))]
@@ -365,7 +366,6 @@ class design4:
                     pdf_make2(pdf,yy,word_font_size,word_up_down,word_left_right,word_l_r_s,word_u_d_s,final_word_Arr[step],puzzle_Arr[step],grid_size_row,grid_size_col,value,alphabate_font_size,alphabate_space_l_r,alphabate_space_u_d,alphabate_up_down,alphabate_left_right,rectangle_left_right,rectangle_up_down,rectangle_left_right_inc,rectangle_up_down_inc,numbering_font_size,numbering_left_right,numbering_up_down,number_show,problem_per_page,line_left_right,line_up_down,text_left_right,text_up_down,xx,step+1,right_puzzle)
                     
                     yy+=puzzle_up_down
-                    # print(puzzle_Arr[step])
                     xx-=puzzle_up_down
                     step+=1
                 pdf.showPage()
@@ -399,30 +399,22 @@ class design4:
                     y= y-r
                 solution_pdf.showPage()
                 sol_one_side+=1
-                    # step+=1
-                
-                # solution_pdf.showPage()
-            
-            
-        # pdf print  
+
         if pro_cnt%problem_per_page:
             step = pro_cnt-(pro_cnt%problem_per_page)
             page_cnt+=1
-            # print("step ",step)
             value = 1
             yy=0
             xx=puzzle_up_down
             tt=pro_cnt%problem_per_page
             while(tt):
                 tt-=1
-                # print("in")
                 pdf_make(pdf,yy,word_font_size,word_up_down,word_left_right,word_l_r_s,word_u_d_s,final_word_Arr[step],puzzle_Arr[step],grid_size_row,grid_size_col,value,alphabate_font_size,alphabate_space_l_r,alphabate_space_u_d,alphabate_up_down,alphabate_left_right,rectangle_left_right,rectangle_up_down,rectangle_left_right_inc,rectangle_up_down_inc,numbering_font_size,numbering_left_right,numbering_up_down,number_show,problem_per_page,line_left_right,line_up_down,text_left_right,text_up_down,xx,step+1,right_puzzle)   
                 step+=1
                 if(step>=pro_cnt):
                     break
                 pdf_make2(pdf,yy,word_font_size,word_up_down,word_left_right,word_l_r_s,word_u_d_s,final_word_Arr[step],puzzle_Arr[step],grid_size_row,grid_size_col,value,alphabate_font_size,alphabate_space_l_r,alphabate_space_u_d,alphabate_up_down,alphabate_left_right,rectangle_left_right,rectangle_up_down,rectangle_left_right_inc,rectangle_up_down_inc,numbering_font_size,numbering_left_right,numbering_up_down,number_show,problem_per_page,line_left_right,line_up_down,text_left_right,text_up_down,xx,step+1,right_puzzle)
                 yy+=puzzle_up_down
-                # print(puzzle_Arr[step])
                 xx-=puzzle_up_down
                 step+=1
                 if(step>=pro_cnt):
@@ -432,8 +424,6 @@ class design4:
             pdf.showPage()
         # pdf solution page
         tt =  x_axis * y_axis
-        # print("procnt ",pro_cnt%tt)
-        # print("total ",tt)
         extra = pro_cnt%tt
         if(pro_cnt%tt  and test==0):
             solution_pdf.setPageSize((8.5 * inch, 11 * inch))
@@ -445,15 +435,11 @@ class design4:
             y = sol_y 
             if sol_one_side%2:
                     rem_x -=0.7
-                    # print(rem_y)
             while(step<pro_cnt):
                 rem_y-=1
-                # print("step",step)
-                # print("rem y",tt,y_axis,rem_y)
                 x= rem_x
                 zz = x_axis
                 while (zz):
-                    # print(zz)
                     zz-=1
                     tt-=1
                     solution_design.solution_func(solution_pdf,final_word_Arr[step],puzzle_Arr[step],store_all_info[step],grid_size_row,grid_size_col,x,y,step,c)
@@ -465,8 +451,7 @@ class design4:
                 y= y-r
             solution_pdf.showPage()
             
-        # pdf_make2(pdf,word_font_size,word_up_down,word_left_right,word_l_r_s,word_u_d_s,final_word,puzzle,grid_size_row,grid_size_col,value,alphabate_font_size,alphabate_space_l_r,alphabate_space_u_d,alphabate_up_down,alphabate_left_right,rectangle_left_right,rectangle_up_down,rectangle_left_right_inc,rectangle_up_down_inc,numbering_font_size,numbering_left_right,numbering_up_down,number_show,problem_per_page,line_left_right,line_up_down,text_left_right,text_up_down)   
-        
+       
         pdf.save()
         if test:
             path ="./media/wordsearch/"
@@ -485,11 +470,19 @@ class design4:
                 file_path = os.path.join('../media/wordsearch/'+path)
         return file_path
     def check_solution():
+        merger = PdfFileMerger()
+        
         paths = os.listdir('./media/wordsearch/solution/')
         file_path =""
         for path in paths:
             if "inner_design" in path:
                 file_path = os.path.join('../media/wordsearch/solution/'+path)
+        merger.append(file_path)
+        merger.append("./media/wordsearch/solution/solution.pdf")
+        rand =random.randint(1,1000000)
+        merger.write("./media/wordsearch/solution/final_solution_"+str(rand)+".pdf")
+        merger.close()
+        file_path = "./media/wordsearch/solution/final_solution_"+str(rand)+".pdf"
         return file_path
 
 
