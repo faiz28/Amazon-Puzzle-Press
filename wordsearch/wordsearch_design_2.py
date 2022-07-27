@@ -166,7 +166,18 @@ def update_puzzle(puzzle,rows,cols):
             else:
                 puzzle[i][j]=puzzle[i][j].upper()
     return puzzle
-    
+   
+   
+def delete_extra_pdf(rand):
+    paths = os.listdir('./media/wordsearch/solution/')
+    file_path =""
+    for path in paths:
+        if "final_solution_" in path:
+            xx = "final_solution_%d.pdf"%(rand)
+            print(path,xx)
+            if path != str(xx)  :
+                os.remove('./media/wordsearch/solution/'+path)
+                # x=1
 class design2:
     def make_pdf(pdf,rand,solution_pdf,font,word_font_size,word_left_right,word_up_down,word_u_d_s,word_l_r_s,alphabate_font_size,alphabate_space_l_r,alphabate_space_u_d,alphabate_up_down,alphabate_left_right,row, col,rectangle_left_right,rectangle_up_down,rectangle_left_right_inc,rectangle_up_down_inc,numbering_font_size,numbering_left_right,numbering_up_down,number_show,problem_per_page,line_left_right,line_up_down,text_left_right,text_up_down,puzzle_up_down,total_problem,test):
         
@@ -357,7 +368,6 @@ class design2:
             pdf.showPage()
         
         # if odd page add extra page
-        print("page cnt ",page_cnt)
         if page_cnt%2:
             pdf.showPage()
         
@@ -414,10 +424,21 @@ class design2:
                 file_path = os.path.join('../media/wordsearch/'+path)
         return file_path
     def check_solution():
+        from PyPDF2 import PdfFileMerger
+        merger = PdfFileMerger()
+        
         paths = os.listdir('./media/wordsearch/solution/')
         file_path =""
         for path in paths:
             if "inner_design" in path:
-                file_path = os.path.join('../media/wordsearch/solution/'+path)
+                file_path = os.path.join('./media/wordsearch/solution/'+path)
+        merger.append("./media/wordsearch/solution/first.pdf")
+        merger.append(file_path)
+        merger.append("./media/wordsearch/solution/solution.pdf")
+        rand =random.randint(1,1000000)
+        merger.write("./media/wordsearch/solution/final_solution_"+str(rand)+".pdf")
+        merger.close()
+        file_path = "../media/wordsearch/solution/final_solution_"+str(rand)+".pdf"
+        delete_extra_pdf(rand)
         return file_path
 
