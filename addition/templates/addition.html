@@ -80,7 +80,10 @@
                             let newHtml = ''
                             newHtml += "<h1 style='text-align: center;'>Math worksheet : " + count + "</h1>";
                             newHtml += "<hr>";
-                            newHtml += "<h5> Digit Limit:</h5>";
+                            newHtml += "<h5> </h5>"
+                            newHtml += "<h5 style='text-align:center';background-color = 'black'; color= 'white';> Addition and Subtraction section</h5>";
+                            newHtml += "<hr>";
+                            newHtml += "<h5> Adding or Subtracting Digits:</h5>";
                             newHtml += "<div class='row'>"
                             newHtml += "<div class='col-md-6 ''>"
                             newHtml += " Min length : <input type='number' name='min" + count + "'value = '0' required>";
@@ -90,7 +93,24 @@
                             newHtml += "</div>"
                             newHtml += "</div>"
                             newHtml += "<br>";
-                            newHtml += "<br";
+
+
+
+                            newHtml += "<h5 style='text-align:center';background-color = 'black'; color= 'white';> Multiplication and Division section</h5>";
+                            newHtml += "<hr>";
+                            newHtml += "<h5> Multiplying or Dividing :</h5>";
+                            newHtml += "<div class='row'>"
+                            newHtml += "<div class='col-md-6 ''>"
+                            newHtml += " <input type='number' name='mul_div" + count + "'value = '1' required> 's";
+                            newHtml += "</div>"
+                            newHtml += "<h5> or</h5>"
+                            newHtml += "<div class='col-md-6 '>"
+                            newHtml += '<input type="checkbox" id="mixed_m_d" name="mixed_m_d' + count + '" value="yes">'
+                            newHtml += '<label for="mixed_m_d"> Mixed problem</label><br>'
+                            newHtml += "</div>"
+                            
+                            newHtml += "<hr>";
+                            newHtml += "<br>";
                             newHtml += "<div class='row'>";
                             newHtml += "<div class='col-md-6 '>"
                             newHtml += "<h5> Number of Page:</h5>"

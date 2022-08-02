@@ -29,24 +29,25 @@ files = [f for f in listdir(file_source) if isfile(join(file_source, f))]
 
 # # Create your views here.
 
-def pdf_make(c,yy,word_font_size,word_up_down,word_left_right,word_l_r_s,word_u_d_s,final_word,puzzle,grid_size_row,grid_size_col,value,alphabate_font_size,alphabate_space_l_r,alphabate_space_u_d,alphabate_up_down,alphabate_left_right,rectangle_left_right,rectangle_up_down,rectangle_left_right_inc,rectangle_up_down_inc,numbering_font_size,numbering_left_right,numbering_up_down,number_show,problem_per_page,line_left_right,line_up_down,text_left_right,text_up_down,puzzle_up_down,step):    
+def pdf_make(c,yy,word_font_size,word_up_down,word_left_right,word_l_r_s,word_u_d_s,final_word,puzzle,grid_size_row,grid_size_col,value,alphabate_font_size,alphabate_space_l_r,alphabate_space_u_d,alphabate_up_down,alphabate_left_right,rectangle_left_right,rectangle_up_down,rectangle_left_right_inc,rectangle_up_down_inc,numbering_font_size,numbering_left_right,numbering_up_down,number_show,problem_per_page,line_left_right,line_up_down,text_left_right,text_up_down,puzzle_up_down,step,one_side):    
     c.setPageSize((8.5 * inch, 11 * inch)) 
     c.setFont("Times-Roman", alphabate_font_size+numbering_font_size)
 
+    # one_side =-0.7
     # yy=-4 #downward 
     
     # cnt=1
     strr="Puzzle #"+str(step)
     l = len(str(step))
     if number_show==2:
-        c.line((numbering_left_right-0.1)*inch, (numbering_up_down-0.08+line_up_down+yy)*inch, (numbering_left_right+1.44+line_left_right+len(str(step))*0.2)*inch, (numbering_up_down-0.08+line_up_down+yy)*inch)
+        c.line((numbering_left_right-0.1+one_side)*inch, (numbering_up_down-0.08+line_up_down+yy)*inch, (numbering_left_right+1.44+line_left_right+len(str(step))*0.2 +one_side)*inch, (numbering_up_down-0.08+line_up_down+yy)*inch)
     if number_show==3:
-        c.roundRect((numbering_left_right-0.2)*inch,(numbering_up_down-0.15+yy)*inch,(1.8+line_left_right)*inch,(0.5+line_up_down)*inch, 6, stroke=1, fill=0)  
+        c.roundRect((numbering_left_right-0.2+one_side)*inch,(numbering_up_down-0.15+yy)*inch,(1.8+line_left_right)*inch,(0.5+line_up_down)*inch, 6, stroke=1, fill=0)  
     if number_show==4:
-        c.roundRect((numbering_left_right-0.2)*inch,(numbering_up_down-0.15+yy)*inch,(1.8+line_left_right)*inch,(0.5+line_up_down)*inch, 6, stroke=0, fill=1)
+        c.roundRect((numbering_left_right-0.2+one_side)*inch,(numbering_up_down-0.15+yy)*inch,(1.8+line_left_right)*inch,(0.5+line_up_down)*inch, 6, stroke=0, fill=1)
         c.setFillColor('white')
         
-    c.drawString((numbering_left_right+text_left_right)*inch, (numbering_up_down+text_up_down+yy)*inch, strr)
+    c.drawString((numbering_left_right+text_left_right+one_side)*inch, (numbering_up_down+text_up_down+yy)*inch, strr)
 
     c.setFont("Times-Roman", alphabate_font_size)
     c.setFillColor('black')
@@ -55,12 +56,12 @@ def pdf_make(c,yy,word_font_size,word_up_down,word_left_right,word_l_r_s,word_u_
     x = 4.5 -((grid_size_col*0.42)/2)
     y=9.4+yy
     inc=0
-    c.roundRect((x-0.25+rectangle_left_right)*inch,(y-(grid_size_row*0.42+rectangle_up_down)+0.4+alphabate_up_down)*inch,(grid_size_col*alphabate_space_l_r*1.1+(rectangle_left_right_inc*0.1))*inch,((grid_size_row*0.42) - (rectangle_up_down_inc*0.1))*inch, 1, stroke=1, fill=0)
+    c.roundRect((x-0.25+rectangle_left_right+one_side)*inch,(y-(grid_size_row*0.42+rectangle_up_down)+0.4+alphabate_up_down)*inch,(grid_size_col*alphabate_space_l_r*1.1+(rectangle_left_right_inc*0.1))*inch,((grid_size_row*0.42) - (rectangle_up_down_inc*0.1))*inch, 1, stroke=1, fill=0)
     # c_sol.rect(4.3*inch,5.5*inch,3.56*inch,3.56*inch, fill=0)
     
     
     
-    x+=alphabate_left_right
+    x+=alphabate_left_right+one_side
     y+=alphabate_up_down
     # print(len(puzzle))
     # print(len(puzzle[0]))
@@ -69,11 +70,11 @@ def pdf_make(c,yy,word_font_size,word_up_down,word_left_right,word_l_r_s,word_u_
             # print(i,j)
             c.drawString(x*inch,y*inch,puzzle[i][j])            
             x+=alphabate_space_l_r
-        x=4.5 -((grid_size_col*0.42)/2)+alphabate_left_right
+        x=4.5 -((grid_size_col*0.42)/2)+alphabate_left_right+one_side
         y-=alphabate_space_u_d
 
 
-    x= word_left_right
+    x= word_left_right+one_side
     c.setFont("Helvetica", word_font_size)
     total= len(final_word)
 
@@ -94,7 +95,7 @@ def pdf_make(c,yy,word_font_size,word_up_down,word_left_right,word_l_r_s,word_u_
                 break
             if((y-0.5<(rem_y-abs(puzzle_up_down)) and yy==0 )or y<0.7):
                 break
-            if x+len(str(final_word[inc].strip()))*0.12<7.7:
+            if x+len(str(final_word[inc].strip()))*0.12<7.7+one_side:
                 c.drawString(x*inch,y*inch, str(final_word[inc]))
                 inc+=1
                 x+=word_l_r_s
@@ -247,6 +248,8 @@ class design2:
         final_word_Arr = []
         store_all_info = []
         page_cnt=0
+        one_side =0.5
+        one_side_cnt = 0
         # for solution in solution_list:
         r = (0.2*grid_size_row)+0.5
         c = (0.2* grid_size_col)+0.35
@@ -257,9 +260,13 @@ class design2:
         sol_one_side = 0
         # for solution in solution_list:
         
-        
+        file_list = []
         for file in onlyfiles:
-            file_path = path+"/"+file;
+            file_path = path+"/"+file
+            file_list.append(file_path)
+
+        random.shuffle(file_list)
+        for file_path in file_list:
             f = open(file_path, "r")
             # print(file)
             if(pro_cnt>=total_problem):
@@ -303,10 +310,16 @@ class design2:
                 yy=0
                 xx=puzzle_up_down
                 tt=problem_per_page
+                
+                if one_side_cnt%2==0:
+                    one_side =0.5
+                else:
+                    one_side = -0.7
+                one_side_cnt+=1
                 while(tt):
                     tt-=1
-                    # print(final_word_Arr[step])
-                    pdf_make(pdf,yy,word_font_size,word_up_down,word_left_right,word_l_r_s,word_u_d_s,final_word_Arr[step],puzzle_Arr[step],grid_size_row,grid_size_col,value,alphabate_font_size,alphabate_space_l_r,alphabate_space_u_d,alphabate_up_down,alphabate_left_right,rectangle_left_right,rectangle_up_down,rectangle_left_right_inc,rectangle_up_down_inc,numbering_font_size,numbering_left_right,numbering_up_down,number_show,problem_per_page,line_left_right,line_up_down,text_left_right,text_up_down,xx,step+1)   
+                  
+                    pdf_make(pdf,yy,word_font_size,word_up_down,word_left_right,word_l_r_s,word_u_d_s,final_word_Arr[step],puzzle_Arr[step],grid_size_row,grid_size_col,value,alphabate_font_size,alphabate_space_l_r,alphabate_space_u_d,alphabate_up_down,alphabate_left_right,rectangle_left_right,rectangle_up_down,rectangle_left_right_inc,rectangle_up_down_inc,numbering_font_size,numbering_left_right,numbering_up_down,number_show,problem_per_page,line_left_right,line_up_down,text_left_right,text_up_down,xx,step+1,one_side)   
                     yy+=puzzle_up_down
                     # print(puzzle_Arr[step])
                     xx-=puzzle_up_down
@@ -357,10 +370,17 @@ class design2:
             yy=0
             xx=puzzle_up_down
             tt=pro_cnt%problem_per_page
+            
+            if one_side_cnt%2==0:
+                one_side =0.7
+            else:
+                one_side = -0.3
+            one_side_cnt+=1
             while(tt):
                 tt-=1
                 # print(final_word_Arr[step])
-                pdf_make(pdf,yy,word_font_size,word_up_down,word_left_right,word_l_r_s,word_u_d_s,final_word_Arr[step],puzzle_Arr[step],grid_size_row,grid_size_col,value,alphabate_font_size,alphabate_space_l_r,alphabate_space_u_d,alphabate_up_down,alphabate_left_right,rectangle_left_right,rectangle_up_down,rectangle_left_right_inc,rectangle_up_down_inc,numbering_font_size,numbering_left_right,numbering_up_down,number_show,problem_per_page,line_left_right,line_up_down,text_left_right,text_up_down,xx,step+1)   
+                
+                pdf_make(pdf,yy,word_font_size,word_up_down,word_left_right,word_l_r_s,word_u_d_s,final_word_Arr[step],puzzle_Arr[step],grid_size_row,grid_size_col,value,alphabate_font_size,alphabate_space_l_r,alphabate_space_u_d,alphabate_up_down,alphabate_left_right,rectangle_left_right,rectangle_up_down,rectangle_left_right_inc,rectangle_up_down_inc,numbering_font_size,numbering_left_right,numbering_up_down,number_show,problem_per_page,line_left_right,line_up_down,text_left_right,text_up_down,xx,step+1,one_side)   
                 yy+=puzzle_up_down
                 # print(puzzle_Arr[step])
                 xx-=puzzle_up_down
@@ -428,6 +448,8 @@ class design2:
         merger = PdfFileMerger()
         
         paths = os.listdir('./media/wordsearch/solution/')
+        if len(paths)==0:
+            return ""
         file_path =""
         for path in paths:
             if "inner_design" in path:

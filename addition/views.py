@@ -1,5 +1,4 @@
 from django.shortcuts import render
-from random import randint
 from reportlab.pdfgen import canvas
 from reportlab.lib.units import inch
 from reportlab.lib.colors import PCMYKColor, PCMYKColorSep, Color, black, blue, red,white,HexColor
@@ -11,6 +10,8 @@ from addition.models import inner_page
 from addition.addition_make import *
 from addition.inner_pdffff import *
 from addition.title_result import *
+from addition.multiplication import * 
+import random
 
 # font 
 # ######################################################################################################################
@@ -44,46 +45,95 @@ def addition(request):
             total = int(total)
             dic=[{}]
             result=[[]]
-
+            add_sub = 0
+            odd_even_page = 1
+            merger = PdfFileMerger()
+            pdf_remember = []
             for i in range(int(total)):
-                merger = PdfFileMerger()
-                min_val = request.POST.get("min"+str(i+1))
-                max_val = request.POST.get("max"+str(i+1))
-                total_page = request.POST.get("page"+str(i+1))
+                
+                
                 operation = request.POST.get("operation"+str(i+1))
-                dic.append({'min':min_val,'max':max_val,'day':day,'operation':operation})
+                total_page = request.POST.get("page"+str(i+1))
                 
- 
-                
-                if int(min_val)>int(max_val):
-                    min_val,max_val = max_val,min_val
-                max_val = int(max_val)
-                min_val = int(min_val)                
-                solution = make_addition.inner_page_print(min_val,max_val,total_page,operation,day)
-                result.append(solution)
-                merger.append("./media/addition/demo_addition.pdf")
-                merger.write("./media/addition/addition%d.pdf"%i)
-                merger.close()
-                day += int(total_page)
+                if operation=='addition' or operation=='subtraction' or operation == 'add_sub' or operation=="all_mixed":
+                    # addition and subtraction information read
+                    min_val = request.POST.get("min"+str(i+1))
+                    max_val = request.POST.get("max"+str(i+1))
+                    rand = random.randint(100,1000000000)
+                    # two pdf not a same number
+                    while True:
+                        if rand in pdf_remember:
+                            rand = random.randint(100,1000000000)
+                        else:
+                            break
+                    # done read all information
+                    # print("in")
+                    dic.append({'min':min_val,'max':max_val,'day':day,'operation':operation})
+                    if int(min_val)>int(max_val):
+                        min_val,max_val = max_val,min_val
+                    max_val = int(max_val)
+                    min_val = int(min_val)                
+                    solution = make_addition.inner_page_print(min_val,max_val,total_page,operation,day,odd_even_page,rand)
+                    result.append(solution)
+                    # merger.append("./media/addition/%ddemo_addition.pdf"%rand)
+                    # merger.write("./media/addition/addition%d.pdf"%add_sub)
+                    pdf_remember.append(rand)
+                    
+                    add_sub+=1
+                    day += int(total_page)
+                    odd_even_page += int(total_page)
+                if operation =='multiplication' or operation =='division' or operation=="mul_div":
+                    
+                    rand = random.randint(100,1000000000)
+                    # two pdf not a same number
+                    while True:
+                        if rand in pdf_remember:
+                            rand = random.randint(100,1000000000)
+                        else:
+                            break
+                    
+                    fixed_m_d = request.POST.get("mul_div"+str(i+1))
+                    x=abs(int(fixed_m_d))
+                    if x==0 or x==1:
+                        x =random.randint(0,1)
+                    same_mixed = request.POST.get("mixed_m_d"+str(i+1))
+                    checkk =0
+                    if same_mixed:
+                        same_mixed =1
+                        checkk=-1
+                    
+                    length = len(str(x))
+                    max_val = 10**(length) - 1
+                    min_val  = x
+                    dic.append({'min':min_val,'max':checkk,'day':day,'operation':operation})
+                    
+                    solution = Multiplication_division.inner_page_print(min_val,max_val,total_page,operation,day,same_mixed,odd_even_page,rand)
+                    result.append(solution)
+                    pdf_remember.append(rand)
+                    add_sub+=1
+                    day += int(total_page)
+                    odd_even_page += int(total_page)
+            merger.close()
             # inner section all file add
-            merger = PdfFileMerger()
-            for i in range(int(total)):
-                merger.append("./media/addition/addition%d.pdf"%i)
-            merger.write("./media/addition/addition.pdf")
-            merger.close()
-            for i in range(int(total)):
-                os.remove("./media/addition/addition%d.pdf"%i)
-            # title page ready
-            Solution.title_pdf(dic,day)
-            Solution.solution_pdf(result,dic,day)
-            merger = PdfFileMerger()
-            merger.append("./media/addition/title.pdf")
-            merger.append("./media/addition/addition.pdf")
-            merger.append("./media/addition/solution.pdf")
-            print_final= randint(100,10000000)
-            xx = "./media/addition/%s_final.pdf"%str(print_final)
-            merger.write(xx)
-            merger.close()
+            if add_sub:
+                merger = PdfFileMerger()
+                for i in pdf_remember:
+                    merger.append("./media/addition/%d_demo_addition.pdf"%i)
+                merger.write("./media/addition/addition.pdf")
+                merger.close()
+                for i in pdf_remember:
+                    os.remove("./media/addition/%d_demo_addition.pdf"%i)
+                # title page ready
+                Solution.title_pdf(dic,day)
+                Solution.solution_pdf(result,dic,day)
+                merger = PdfFileMerger()
+                merger.append("./media/addition/title.pdf")
+                merger.append("./media/addition/addition.pdf")
+                merger.append("./media/addition/solution.pdf")
+                print_final= randint(100,10000000)
+                xx = "./media/addition/%s_final.pdf"%str(print_final)
+                merger.write(xx)
+                merger.close()
         else:
             total = 0
 
@@ -158,11 +208,13 @@ def inner_design(request):
     
     if request.method == "POST":
         fontsss = request.POST.get('fonts')
+        fontsss ="Helvetica"
         # header section
         h_f = request.POST.get('header_fonts')
         f_i = request.POST.get('font_inc_dec')
         h_u_d = request.POST.get('header_up_down')
         h_l_r = request.POST.get('header_left_right')
+        h_f = "Helvetica"
         if h_f:
             header_fonts = h_f
         if f_i:
@@ -214,7 +266,7 @@ def inner_design(request):
         if p_p_c:
             prob_per_col = int(p_p_c)
         if d_i_s:
-            ineer_space  = 0.1*int(d_i_s)
+            ineer_space  = 0.05*int(d_i_s)
             
             
         # rectangle sector
@@ -225,11 +277,11 @@ def inner_design(request):
         r_o_f = request.POST.get("rec_o_o")
         
         if r_u_d:
-            ractangle_up_down = int(r_u_d)*0.1+ractangle_up_down
+            ractangle_up_down = int(r_u_d)*0.05+ractangle_up_down
         if r_l_r:
-            ractangle_left_right = int(r_l_r)*0.1+ractangle_left_right
+            ractangle_left_right = int(r_l_r)*0.05+ractangle_left_right
         if l_r_i:
-            rec_l_r_inc = int(l_r_i)*0.1+rec_l_r_inc
+            rec_l_r_inc = int(l_r_i)*0.05+rec_l_r_inc
         if u_d_i:
             rec_u_d_inc = int(u_d_i)*0.04+rec_u_d_inc 
             

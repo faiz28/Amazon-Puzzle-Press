@@ -27,6 +27,7 @@ def wordsearch(request):
 
     
     inner_design = design2.check_solution()
+    # inner_design = ""
     return render(request,'wordsearch.html',{'inner_design':inner_design})
 
 def wordsearch_design(request):

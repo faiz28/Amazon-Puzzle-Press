@@ -86,8 +86,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'puzzle',
-        'USER': 'faiz',
-        'PASSWORD': 'Faiz@676128',
+        'USER': 'root',
+        'PASSWORD': '',
         'HOST': 'localhost'
     }
 }

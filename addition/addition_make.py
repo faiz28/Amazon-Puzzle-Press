@@ -14,16 +14,17 @@ from reportlab.lib.utils import ImageReader
 op={1:'addition',2:'subtraction',3:'multiplication',4:'division'}
 
 
-def page_title_set_up(pdf,font,f_i_d,h_u_d,h_l_r,cnt,min_val,max_val,day,operation):
+def page_title_set_up(pdf,font,f_i_d,h_u_d,h_l_r,cnt,min_val,max_val,day,operation,x_update):
     pdf.setPageSize((8.5 * inch, 11 * inch)) 
-    x = 0.8+h_l_r
+    x = x_update-0.8+h_l_r
     y = 9.9+h_u_d
     pdf.setFont(font, 23+f_i_d)
     
     logo = ImageReader('./media/addition/image1.png')
     pdf.setFillColor(HexColor('#131921'))
     pdf.roundRect(x*inch,(y-0.08)*inch,2.1*inch,.69*inch,.2*inch, fill=True, stroke=False)
-    pdf.drawImage(logo,  x*inch, (y+0.02)*inch, 0.8*inch,0.8*inch ,mask='auto')
+    pdf.drawImage(logo,  x*inch, (y+0.2)*inch, 0.6*inch,0.6*inch ,mask='auto')
+
     pdf.setFillColor(HexColor('#ffffff'))
     s = "Day %d"%(day)
     pdf.drawString((x+0.7)*inch,(y+0.3)*inch,s)
@@ -174,13 +175,14 @@ def line_setup(pdf,x,y,rem_x,r_l_r,l_r_i,l_i,l_u_d,l_l_r,p_p_c,u_d_i,r_u_d):
     # print("xx ",x - rem_x/2 +0.4+l_r_i )
     pdf.line((x+l_l_r-rem_x+rem_x/2 -0.3 +r_l_r)*inch,(y-0.25+l_u_d+r_u_d)*inch, (x+l_l_r - rem_x/2 +(1.87-(p_p_c*0.2))+l_r_i + l_i+r_l_r)*inch,(y-0.25+l_u_d+r_u_d)*inch)
 
-def inner_pdf_design(pdf,font,numbering_font_size,n_u_d,n_l_r,d_f_s,d_u_d,d_l_r,d_s,front_inc,p_p_r,p_p_c,l_o_d,r_l_r,r_u_d,l_r_i,u_d_i,l_i,l_u_d,l_l_r,r_o_f,n_o_o,d_i_s,min_val,max_val,operation):    
+def inner_pdf_design(pdf,font,numbering_font_size,n_u_d,n_l_r,d_f_s,d_u_d,d_l_r,d_s,front_inc,p_p_r,p_p_c,l_o_d,r_l_r,r_u_d,l_r_i,u_d_i,l_i,l_u_d,l_l_r,r_o_f,n_o_o,d_i_s,min_val,max_val,operation,x_update):    
     # variable declaration
     global cnt
     result = []
     
     # task start
-    x=1.8+ d_l_r  #starting x
+    x=x_update  #starting x
+    rem_x = x
     y=9.5-front_inc +d_u_d #starting y
     
     # column positioning problem control
@@ -196,11 +198,13 @@ def inner_pdf_design(pdf,font,numbering_font_size,n_u_d,n_l_r,d_f_s,d_u_d,d_l_r,
     # row problem control
     yy = float(9.5/p_p_r)
     
+    
+    rem_x = x
     # print value
     for i in range(p_p_r):
         for j in range(p_p_c):
             # print(str(y)+" down "+ str(y-(d_s*.2+front_inc)))
-            if( y<0.8  or x>(8)):
+            if( y<0.8  or x>(8.4)):
                 break
             
             upper_digit = randint(min_val,max_val)
@@ -219,7 +223,7 @@ def inner_pdf_design(pdf,font,numbering_font_size,n_u_d,n_l_r,d_f_s,d_u_d,d_l_r,
             line_setup(pdf,x,y,xx,r_l_r,l_r_i,l_i,l_u_d,l_l_r,p_p_c,u_d_i,r_u_d)
             x += xx+d_i_s  #digit inner space
         y -= yy
-        x =1.8+d_l_r
+        x =rem_x
         # print()
     return result
 
@@ -234,12 +238,13 @@ class make_addition:
 
     
 
-    def inner_page_print(min_val,max_val,total_page,operation,day):
+    def inner_page_print(min_val,max_val,total_page,operation,day,odd_even_page,rand ):
         
-        pdf = canvas.Canvas("./media/addition/demo_addition.pdf")
+        pdf = canvas.Canvas("./media/addition/%d_demo_addition.pdf"%rand)
 
         # pdf.setPageSize((70, 5000))
-        bd_x =1.8
+
+            
         bd_y = 9.45
         info = inner_page.objects.all().first()
         id = info.id
@@ -283,15 +288,21 @@ class make_addition:
         solution=[[]]
         
         for i in range(int(total_page)):
+            if odd_even_page%2==0:
+                x_update = 1.8
+            else:
+                x_update = 1.3
+                
             global cnt
             cnt=0
             day+=1
             
-            result = inner_pdf_design(pdf,font,numbering_font_size,numbering_up_down,numbering_left_right,digit_font_size,digit_up_down,digit_left_right,digit_space,front_inc,prob_per_row,prob_per_col,length_of_digit,ractangle_left_right,ractangle_up_down,rec_l_r_inc,rec_u_d_inc,  line_inc,line_up_down,line_left_right,rec_on_off,number_on_off,ineer_space,min_val,max_val,operation)
+            result = inner_pdf_design(pdf,font,numbering_font_size,numbering_up_down,numbering_left_right,digit_font_size,digit_up_down,digit_left_right,digit_space,front_inc,prob_per_row,prob_per_col,length_of_digit,ractangle_left_right,ractangle_up_down,rec_l_r_inc,rec_u_d_inc,  line_inc,line_up_down,line_left_right,rec_on_off,number_on_off,ineer_space,min_val,max_val,operation,x_update)
             solution.append(result)
-            page_title_set_up(pdf,header_fonts,font_inc_dec,header_up_down,header_left_right,cnt,min_val,max_val,day,operation)
+            page_title_set_up(pdf,header_fonts,font_inc_dec,header_up_down,header_left_right,cnt,min_val,max_val,day,operation,x_update)
             pdf.showPage()
+            odd_even_page+=1
         pdf.save()
         
-        
+        print("odd even  page ",odd_even_page)
         return solution

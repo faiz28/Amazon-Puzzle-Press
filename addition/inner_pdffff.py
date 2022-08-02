@@ -18,17 +18,18 @@ from addition.addition_make import *
 
 # numbering set up
 def numbering_setup(pdf,font,numbering_font_size,n_l_r,x,i,j,y,n_u_d,d_f_s,cnt):
-    
+    # print("font  ---------------- >",font)
+    # font = "Times-Roman"
     pdf.setFont(font, numbering_font_size)
     pdf.setFillColor(HexColor('#6d757a'))
     pdf.drawString((x-n_l_r)*inch,(y+n_u_d)*inch, str(cnt)+".")
     
     
 def digit_setup(pdf,font,d_f_s,upper_digit,front_inc,x,d_s,lower_digit,y):
+    # font = "Times-Roman"
     pdf.setFillColor('black' )
     pdf.setFont(font, d_f_s)
     len_up = len(str(upper_digit))
-    # rem_len = len_up+front_inc
     len_lower = len(str(lower_digit))
     upper_space = 0.12
     up_start = upper_space
@@ -154,7 +155,7 @@ class in_pdf:
 
         logo = ImageReader('./media/addition/image1.png')
        
-        
+        # font ="Times Roman"
         pdf.setFont(font, 23+f_i_d)
         pdf.setFillColor(HexColor('#131921'))
         pdf.roundRect(x*inch,(y-0.08)*inch,2.1*inch,.69*inch,.2*inch, fill=True, stroke=False)

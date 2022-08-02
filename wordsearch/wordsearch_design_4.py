@@ -171,7 +171,8 @@ def pdf_make2(c,yy,word_font_size,word_up_down,word_left_right,word_l_r_s,word_u
             # print("y -> "+str(y)+" pud "+str(abs(puzzle_up_down)))
             if((y+.6<11.25-abs(puzzle_up_down) and yy==0) or y<0.7):
                 break
-            if x+len(str(final_word[inc].strip()))*0.11<8.2:
+            
+            if x+len(str(final_word[inc].strip()))*0.11<8.1:
                 c.drawString(x*inch,y*inch, str(final_word[inc].strip()))
                 inc+=1
                 x+=word_l_r_s
@@ -315,8 +316,13 @@ class design4:
         sol_one_side = 0
         # for solution in solution_list:
         
-        # print(y - (10/r)*r )
+        file_list = []
         for file in onlyfiles:
+            file_path = path+"/"+file
+            file_list.append(file_path)
+
+        random.shuffle(file_list)
+        for file_path in file_list:
             file_path = path+"/"+file;
             f = open(file_path, "r")
             # print(file)

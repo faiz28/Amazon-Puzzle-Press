@@ -75,7 +75,7 @@ def make_file(str_p ,min_char,max_char,start_page,end_page,Num_of_word,Num_of_fi
                                         f = open('./media/file/file'+str(pdf_num)+'.txt', 'a')
 
 
-    print("val ",len(value))
+    # print("val ",len(value))
     if pdf_num<Num_of_file: 
         pdf_num -=1
         f.close()
