@@ -1,13 +1,13 @@
 # Amazon puzzle book making #
 ###  Special features ### 
-1. Automatic Addition Book Making
-2. Automatic Subtraction Book Making
-3. Automatic Multiplicaiton Book Making
-4. Automatic Division Book Making
-5. Make a Book Combined of Addition, Subtraction, Multiplicaiton and Division
-6. Word Search  Puzzle Book Making 
-7. Word Scramble Puzzle Book Making.
+1. Automatic Addition Book Creating
+2. Automatic Subtraction Book Creating
+3. Automatic Multiplicaiton Book Creating
+4. Automatic Division Book Creating
+5. Create a Book Combining Addition, Subtraction, Multiplication, and Division
+6. Word Search Puzzle Book Creating 
+7. Word Scramble Puzzle Book Creating 
 
 ## More information about wordsearch and word scramble ##
-You can Upload a English pdf book or file. Software automatic scraning the file and collect word for making Wordsearch and Word scrable puzzle. It can positioned every puzzle at a flexiable locaiton because of you can move the position. <br />
-###  For making automatic puzzle book for yourself or selling a book in Amazon or other places. it will be your best choice. ###
+You can upload an English PDF book or file. The software automatically scans the file and collects words to create Wordsearch and Word scramble puzzles. You can position each puzzle flexibly because you can move them around. <br />
+### For creating automatic puzzle books for personal use or for sale on Amazon or other platforms, it could be your best choice. ###
