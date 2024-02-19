@@ -1,4 +1,4 @@
-# Amazon puzzle book making #
+# Amazon Puzzle Press #
 ###  Special features ### 
 1. Automatic Addition Book Creating
 2. Automatic Subtraction Book Creating
