@@ -5,8 +5,8 @@
 3. Automatic Multiplicaiton Book Making
 4. Automatic Division Book Making
 5. Make a Book Combined of Addition, Subtraction, Multiplicaiton and Division
-6.  ### Word Search ### Puzzle Book Making 
-7.  ###  Word Scramble ###  Puzzle Book Making.
+6. Word Search  Puzzle Book Making 
+7. Word Scramble Puzzle Book Making.
 
 ## More information about wordsearch and word scramble ##
 You can Upload a English pdf book or file. Software automatic scraning the file and collect word for making Wordsearch and Word scrable puzzle. It can positioned every puzzle at a flexiable locaiton because of you can move the position. <br />
